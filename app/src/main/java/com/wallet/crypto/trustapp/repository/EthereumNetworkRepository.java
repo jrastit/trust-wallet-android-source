@@ -14,6 +14,7 @@ import io.reactivex.Single;
 import static com.wallet.crypto.trustapp.C.ETHEREUM_NETWORK_NAME;
 import static com.wallet.crypto.trustapp.C.ETH_SYMBOL;
 import static com.wallet.crypto.trustapp.C.KOVAN_NETWORK_NAME;
+import static com.wallet.crypto.trustapp.C.OASIS_NETWORK_NAME;
 import static com.wallet.crypto.trustapp.C.POA_NETWORK_NAME;
 import static com.wallet.crypto.trustapp.C.POA_SYMBOL;
 import static com.wallet.crypto.trustapp.C.ROPSTEN_NETWORK_NAME;
@@ -23,6 +24,12 @@ import static com.wallet.crypto.trustapp.C.ETC_SYMBOL;
 public class EthereumNetworkRepository implements EthereumNetworkRepositoryType {
 
 	private final NetworkInfo[] NETWORKS = new NetworkInfo[] {
+			new NetworkInfo(OASIS_NETWORK_NAME, ETH_SYMBOL,
+					"https://oasis.aitivity.com",
+					"https://poa.trustwalletapp.com/",
+					"https://etherscan.io/",
+					20,
+					false),
 			new NetworkInfo(ETHEREUM_NETWORK_NAME, ETH_SYMBOL,
                     "https://mainnet.infura.io/llyrtzQ3YhkdESt2Fzrk",
                     "https://api.trustwalletapp.com/",
@@ -35,7 +42,7 @@ public class EthereumNetworkRepository implements EthereumNetworkRepositoryType 
                     "https://core.poa.network",
                     "https://poa.trustwalletapp.com","poa", 99, false),
 			new NetworkInfo(KOVAN_NETWORK_NAME, ETH_SYMBOL,
-                    "https://kovan.infura.io/llyrtzQ3YhkdESt2Fzrk",
+                    "https://kovan.infura.io/v3/dcb2656f12c4473d995cc1f7e0950296",
                     "https://kovan.trustwalletapp.com/",
                     "https://kovan.etherscan.io", 42, false),
 			new NetworkInfo(ROPSTEN_NETWORK_NAME, ETH_SYMBOL,

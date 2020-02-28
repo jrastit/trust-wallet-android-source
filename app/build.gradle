@@ -3,12 +3,12 @@ apply plugin: 'realm-android'
 
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
-        applicationId "com.random.pickyourown"
-        minSdkVersion 18
-        targetSdkVersion 26
+        applicationId "com.aitivity.enterprise.wallet"
+        minSdkVersion 24
+        targetSdkVersion 28
         versionCode 1
         versionName "1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -45,7 +45,8 @@ project.ext {
     retrofitVersion = "2.3.0"
     okhttpVersion = "3.9.0"
     supportVersion = "27.0.2"
-    web3jVersion = "3.0.1-android"
+    //web3jVersion = "3.0.1-android"
+    web3jVersion = "4.1.0-android"
     gethVersion = "1.7.0"
     gsonVersion = "2.8.2"
     rxJavaVersion = "2.1.6"
@@ -92,6 +93,7 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-android-processor:$project.daggerVersion"
     // if you are not using support library, include this instead
     implementation "com.google.dagger:dagger-android:$project.daggerVersion"
+    //Knox
     // Tests
     testImplementation "junit:junit:4.12"
     androidTestImplementation("com.android.support.test.espresso:espresso-core:2.2.2", {

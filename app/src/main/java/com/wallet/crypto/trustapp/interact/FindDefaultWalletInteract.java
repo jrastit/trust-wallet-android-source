@@ -3,6 +3,8 @@ package com.wallet.crypto.trustapp.interact;
 import com.wallet.crypto.trustapp.entity.Wallet;
 import com.wallet.crypto.trustapp.repository.WalletRepositoryType;
 
+import javax.inject.Inject;
+
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -11,6 +13,7 @@ public class FindDefaultWalletInteract {
 
 	private final WalletRepositoryType walletRepository;
 
+	@Inject
 	public FindDefaultWalletInteract(WalletRepositoryType walletRepository) {
 		this.walletRepository = walletRepository;
 	}

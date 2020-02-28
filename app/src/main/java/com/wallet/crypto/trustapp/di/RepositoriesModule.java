@@ -2,6 +2,8 @@ package com.wallet.crypto.trustapp.di;
 
 import android.content.Context;
 
+import com.aitivity.enterprise.wallet.aave.ATokenRepository;
+import com.aitivity.enterprise.wallet.aave.ATokenRepositoryType;
 import com.google.gson.Gson;
 import com.wallet.crypto.trustapp.repository.EthereumNetworkRepository;
 import com.wallet.crypto.trustapp.repository.EthereumNetworkRepositoryType;
@@ -87,6 +89,22 @@ public class RepositoriesModule {
 				accountKeystoreService,
 				inMemoryCache,
 				inDiskCache,
+				blockExplorerClient);
+	}
+
+	@Singleton
+	@Provides
+	ATokenRepositoryType provideATokenRepository(
+			OkHttpClient okHttpClient,
+			EthereumNetworkRepositoryType networkRepository,
+			AccountKeystoreService accountKeystoreService,
+			BlockExplorerClientType blockExplorerClient) {
+		TransactionLocalSource inMemoryCache = new TransactionInMemorySource();
+		return new ATokenRepository(
+				okHttpClient,
+				networkRepository,
+				accountKeystoreService,
+				inMemoryCache,
 				blockExplorerClient);
 	}
 

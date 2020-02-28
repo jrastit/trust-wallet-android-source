@@ -8,6 +8,7 @@ import com.wallet.crypto.trustapp.interact.FetchTransactionsInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultNetworkInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultWalletInteract;
 import com.wallet.crypto.trustapp.interact.GetDefaultWalletBalance;
+import com.wallet.crypto.trustapp.router.AaveRouter;
 import com.wallet.crypto.trustapp.router.ExternalBrowserRouter;
 import com.wallet.crypto.trustapp.router.ManageWalletsRouter;
 import com.wallet.crypto.trustapp.router.MyAddressRouter;
@@ -24,6 +25,7 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
     private final FetchTransactionsInteract fetchTransactionsInteract;
     private final ManageWalletsRouter manageWalletsRouter;
     private final SettingsRouter settingsRouter;
+    private final AaveRouter aaveRouter;
     private final SendRouter sendRouter;
     private final TransactionDetailRouter transactionDetailRouter;
     private final MyAddressRouter myAddressRouter;
@@ -37,6 +39,7 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
             GetDefaultWalletBalance getDefaultWalletBalance,
             ManageWalletsRouter manageWalletsRouter,
             SettingsRouter settingsRouter,
+            AaveRouter aaveRouter,
             SendRouter sendRouter,
             TransactionDetailRouter transactionDetailRouter,
             MyAddressRouter myAddressRouter,
@@ -48,6 +51,7 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
         this.fetchTransactionsInteract = fetchTransactionsInteract;
         this.manageWalletsRouter = manageWalletsRouter;
         this.settingsRouter = settingsRouter;
+        this.aaveRouter = aaveRouter;
         this.sendRouter = sendRouter;
         this.transactionDetailRouter = transactionDetailRouter;
         this.myAddressRouter = myAddressRouter;
@@ -65,6 +69,7 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
                 getDefaultWalletBalance,
                 manageWalletsRouter,
                 settingsRouter,
+                aaveRouter,
                 sendRouter,
                 transactionDetailRouter,
                 myAddressRouter,

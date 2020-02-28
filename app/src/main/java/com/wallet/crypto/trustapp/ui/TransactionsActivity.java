@@ -132,6 +132,9 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
             case R.id.action_settings: {
                 viewModel.showSettings(this);
             } break;
+            case R.id.action_aave: {
+                viewModel.showAave(this);
+            } break;
             case R.id.action_deposit: {
                 openExchangeDialog();
             } break;

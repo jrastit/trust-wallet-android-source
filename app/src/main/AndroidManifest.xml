@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <!-- Permissions TODO List permissions used by application -->
+
+
     <application
         android:name=".App"
         android:allowBackup="false"
@@ -72,6 +75,10 @@
         <activity
             android:name=".ui.GasSettingsActivity"
             android:label="@string/title_send_settings" />
+
+        <activity android:name=".ui.AaveActivity"
+            android:label="Aave" />
+
     </application>
 
 </manifest>

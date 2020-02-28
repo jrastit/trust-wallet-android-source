@@ -17,7 +17,6 @@ import org.web3j.abi.datatypes.Function;
 import org.web3j.abi.datatypes.Type;
 import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.Web3jFactory;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.http.HttpService;
@@ -55,7 +54,7 @@ public class TokenRepository implements TokenRepositoryType {
     }
 
     private void buildWeb3jClient(NetworkInfo defaultNetwork) {
-        web3j = Web3jFactory.build(new HttpService(defaultNetwork.rpcServerUrl, httpClient, false));
+        web3j = Web3j.build(new HttpService(defaultNetwork.rpcServerUrl, httpClient, false));
     }
 
     @Override

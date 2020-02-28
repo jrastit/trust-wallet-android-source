@@ -10,6 +10,7 @@ public abstract class C {
     public static final String CLASSIC_NETWORK_NAME = "Ethereum Classic";
     public static final String POA_NETWORK_NAME = "POA Network";
     public static final String KOVAN_NETWORK_NAME = "Kovan (Test)";
+    public static final String OASIS_NETWORK_NAME = "Oasis (Test)";
     public static final String ROPSTEN_NETWORK_NAME = "Ropsten (Test)";
 
     public static final String ETHEREUM_TIKER = "ethereum";
