@@ -2,7 +2,7 @@ package com.aitivity.enterprise.wallet.repository;
 
 import com.aitivity.enterprise.wallet.MyTransactionManager;
 import com.aitivity.enterprise.wallet.MyWalletUtil;
-import com.aitivity.enterprise.wallet.smartContract.ATokenWeb3;
+import com.aitivity.enterprise.wallet.smartContract.LendingPoolWeb3;
 import com.wallet.crypto.trustapp.entity.NetworkInfo;
 import com.wallet.crypto.trustapp.entity.Wallet;
 import com.wallet.crypto.trustapp.repository.EthereumNetworkRepositoryType;
@@ -11,14 +11,11 @@ import com.wallet.crypto.trustapp.service.AccountKeystoreService;
 import com.wallet.crypto.trustapp.service.BlockExplorerClientType;
 
 import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.generated.Uint16;
 import org.web3j.abi.datatypes.generated.Uint256;
-import org.web3j.abi.datatypes.generated.Uint8;
 import org.web3j.protocol.Web3j;
-
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
-
-import org.web3j.tx.ReadonlyTransactionManager;
 import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 
@@ -28,7 +25,7 @@ import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 
-public class ATokenRepository implements ATokenRepositoryType {
+public class LendingPoolRepository implements LendingPoolRepositoryType {
 
     private final EthereumNetworkRepositoryType networkRepository;
     private final AccountKeystoreService accountKeystoreService;
@@ -37,11 +34,11 @@ public class ATokenRepository implements ATokenRepositoryType {
     private final OkHttpClient httpClient;
     private String networkName;
 
-    public ATokenRepository(OkHttpClient okHttpClient,
-                            EthereumNetworkRepositoryType networkRepository,
-                            AccountKeystoreService accountKeystoreService,
-                            TransactionLocalSource inMemoryCache,
-                            BlockExplorerClientType blockExplorerClient
+    public LendingPoolRepository(OkHttpClient okHttpClient,
+                                 EthereumNetworkRepositoryType networkRepository,
+                                 AccountKeystoreService accountKeystoreService,
+                                 TransactionLocalSource inMemoryCache,
+                                 BlockExplorerClientType blockExplorerClient
 
     ){
         this.networkName = null;
@@ -71,22 +68,22 @@ public class ATokenRepository implements ATokenRepositoryType {
         contractGasProvider = new ContractGasProvider() {
             @Override
             public BigInteger getGasPrice(String contractFunc) {
-                return new BigInteger("1");
+                return new BigInteger("2");
             }
 
             @Override
             public BigInteger getGasPrice() {
-                return new BigInteger("1");
+                return new BigInteger("2");
             }
 
             @Override
             public BigInteger getGasLimit(String contractFunc) {
-                return new BigInteger("3000000");
+                return new BigInteger("300000");
             }
 
             @Override
             public BigInteger getGasLimit() {
-                return new BigInteger("3000000");
+                return new BigInteger("300000");
             }
         };
     }
@@ -95,10 +92,10 @@ public class ATokenRepository implements ATokenRepositoryType {
 
         if (networkName != null) {
             if (networkName.startsWith("Ropsten")) {
-                return "0x2433A1b6FcF156956599280C3Eb1863247CFE675";
+                return "0x9E5C7835E4b13368fd628196C4f1c6cEc89673Fa";
             }
             if (networkName.startsWith("Kovan")) {
-                return "0xD483B49F2d55D2c53D32bE6efF735cB001880F79";
+                return "0x580D4Fdc4BF8f9b5ae2fb9225D584fED4AD5375c";
             }
         }
 
@@ -106,59 +103,14 @@ public class ATokenRepository implements ATokenRepositoryType {
 
     }
 
-    public Single<String> getBalance(Wallet from
-    ){
-        TransactionManager transactionManager = new ReadonlyTransactionManager(web3j, from.address);
-
-        ATokenWeb3 aTokenWeb3 = new ATokenWeb3(
-                web3j,
-                getContractAddress(),
-                transactionManager,
-                contractGasProvider,
-                networkRepository,
-                accountKeystoreService,
-                transactionLocalSource,
-                blockExplorerClient);
-
-
-        return Single.fromCallable(() -> {
-            Uint256 ret = aTokenWeb3.balanceOf(new Address(from.address)).send();
-
-            return MyWalletUtil.formatDecimal(ret.getValue().toString(), 18);
-        }).subscribeOn(Schedulers.io());
-    }
-
-    public Single<String> redeem(Wallet from, double amount, String password
-    ){
-        TransactionManager transactionManager = new MyTransactionManager(web3j, accountKeystoreService, from, password, MyWalletUtil.getChainId(networkRepository));
-
-        ATokenWeb3 aTokenWeb3 = new ATokenWeb3(
-                web3j,
-                getContractAddress(),
-                transactionManager,
-                contractGasProvider,
-                networkRepository,
-                accountKeystoreService,
-                transactionLocalSource,
-                blockExplorerClient);
-
-        return Single.fromCallable(() -> {
-            TransactionReceipt tr = aTokenWeb3.redeem(new Uint256(MyWalletUtil.finalAmount(amount))).send();
-            return  tr.getTransactionHash();
-        }).subscribeOn(Schedulers.io());
-    }
-
-    public Single<String> test(Wallet from, String password
-    ){
-        TransactionManager transactionManager = new MyTransactionManager(
-                web3j,
+    @Override
+    public Single<String> deposit(Wallet from, double amount, String password) {
+        TransactionManager transactionManager = new MyTransactionManager(web3j,
                 accountKeystoreService,
                 from,
                 password,
                 MyWalletUtil.getChainId(networkRepository));
-
-        ATokenWeb3 aTokenWeb3 = new ATokenWeb3(
-                web3j,
+        LendingPoolWeb3 lendingPoolWeb3 = new LendingPoolWeb3(web3j,
                 getContractAddress(),
                 transactionManager,
                 contractGasProvider,
@@ -166,15 +118,16 @@ public class ATokenRepository implements ATokenRepositoryType {
                 accountKeystoreService,
                 transactionLocalSource,
                 blockExplorerClient);
-
         return Single.fromCallable(() -> {
-            Uint8 ret = aTokenWeb3.decimals().send();
-            Uint256 ret2 = aTokenWeb3.principalBalanceOf(new Address(from.address)).send();
-            return "decimal : " +
-                    ret.getValue().toString() +
-                    "\n" +
-                    "Principale balance : " +
-                    MyWalletUtil.formatDecimal(ret2.getValue().toString(), 18);
+            TransactionReceipt tr = lendingPoolWeb3.deposit(
+                    new Address("0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"),
+                    new Uint256(MyWalletUtil.finalAmount(amount)),
+                    new Uint16(0),
+                    MyWalletUtil.finalAmount(amount))
+                    .send();
+            return tr.getTransactionHash();
         }).subscribeOn(Schedulers.io());
     }
+
+
 }

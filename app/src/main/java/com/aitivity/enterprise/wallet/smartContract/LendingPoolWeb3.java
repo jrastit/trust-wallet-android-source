@@ -11,14 +11,14 @@ import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 
 
-public class ATokenWeb3 extends AToken{
+public class LendingPoolWeb3 extends LendingPool{
 
     private final EthereumNetworkRepositoryType networkRepository;
     private final AccountKeystoreService accountKeystoreService;
     private final TransactionLocalSource transactionLocalSource;
     private final BlockExplorerClientType blockExplorerClient;
 
-    public ATokenWeb3(
+    public LendingPoolWeb3(
             Web3j web3j,
             String address,
             TransactionManager transactionManager,
@@ -33,6 +33,7 @@ public class ATokenWeb3 extends AToken{
         this.blockExplorerClient = blockExplorerClient;
         this.transactionLocalSource = inMemoryCache;
         this.networkRepository.addOnChangeDefaultNetwork(this::onNetworkChanged);
+
     }
 
     private void onNetworkChanged(NetworkInfo networkInfo) {

@@ -2,6 +2,8 @@ package com.wallet.crypto.trustapp.service;
 
 import com.wallet.crypto.trustapp.entity.Wallet;
 
+import org.ethereum.geth.Transaction;
+
 import java.math.BigInteger;
 
 import io.reactivex.Completable;
@@ -39,6 +41,25 @@ public interface AccountKeystoreService {
 	 * @param password account password
 	 */
 	Completable deleteAccount(String address, String password);
+
+
+	/**
+	 * Sign transaction
+	 * @param signer {@link Wallet}
+	 * @param signerPassword password from {@link Wallet}
+	 * @param tx transaction
+	 * @return sign data
+	 */
+	public Single<byte[]> signTransaction(Wallet signer, String signerPassword, Transaction tx, long chainId);
+
+	/**
+	 * Sign transaction
+	 * @param signer {@link Wallet}
+	 * @param signerPassword password from {@link Wallet}
+	 * @param tx transaction
+	 * @return sign data
+	 */
+	public byte[] signTransactionBin(Wallet signer, String signerPassword, Transaction tx, long chainId);
 
 	/**
 	 * Sign transaction

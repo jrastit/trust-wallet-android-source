@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.wallet.crypto.trustapp.R;
@@ -30,15 +29,14 @@ public class AaveActivity extends BaseActivity implements HasFragmentInjector {
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentInjector;
 
-    private TextView exchangeRate;
-
+    private TextView test;
     private TextView balance;
+    private TextView depositAmount;
+    private TextView deposit;
+    private TextView redeemAmount;
+    private TextView redeem;
 
-    private Button getExchangeRateButton;
 
-    private Button getBalanceButton;
-
-    private TextView balanceDecoded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,51 +44,69 @@ public class AaveActivity extends BaseActivity implements HasFragmentInjector {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aave);
         toolbar();
-        exchangeRate = findViewById(R.id.exchangeRate);
+        test = findViewById(R.id.test);
         balance = findViewById(R.id.balance);
-        balanceDecoded = findViewById(R.id.balance_decoded);
+        deposit = findViewById(R.id.deposit);
+        redeem = findViewById(R.id.redeem);
+        
+        depositAmount = findViewById(R.id.deposit_amount);
+        redeemAmount = findViewById(R.id.redeem_amount);
 
         viewModel = ViewModelProviders.of(this, aaveViewModelFactory)
                 .get(AaveViewModel.class);
-        viewModel.getExchangeRate().observe(this, this::onExchangeRateChanged);
+
+        viewModel.test().observe(this, this::onTestChanged);
         viewModel.getBalance().observe(this, this::onBalanceChanged);
-        viewModel.getBalanceDecoded().observe(this, this::onBalanceDecodedChanged);
+        viewModel.deposit().observe(this, this::onDepositChanged);
+        viewModel.redeem().observe(this, this::onRedeemChanged);
 
-        getExchangeRateButton = findViewById(R.id.getExchangeRateBtn);
-        getBalanceButton = findViewById(R.id.getBalanceBtn);
-
-        getExchangeRateButton.setOnClickListener(view -> onGetExchangeRate());
-        getBalanceButton.setOnClickListener(view -> onGetBalance());
+        findViewById(R.id.testBtn).setOnClickListener(view -> onTest());
+        findViewById(R.id.getBalanceBtn).setOnClickListener(view -> onGetBalance());
+        findViewById(R.id.depositBtn).setOnClickListener(view -> onDeposit());
+        findViewById(R.id.redeemBtn).setOnClickListener(view -> onRedeem());
 
         viewModel.defaultNetwork().observe(this, this::onDefaultNetwork);
-
-
     }
 
-    public void onExchangeRateChanged(String exchangeRate) {
-        this.exchangeRate.setText(exchangeRate);
+    public void onTestChanged(String test) {
+        this.test.setText(test);
     }
 
     public void onBalanceChanged(String balance) {
         this.balance.setText(balance);
     }
 
-    public void onBalanceDecodedChanged(String balanceDecoded) {
-        this.balanceDecoded.setText(balanceDecoded);
+    private void onDepositChanged(String deposit) {
+        this.deposit.setText(deposit);
     }
 
-    private void onGetExchangeRate() {
-        viewModel.getExchangeRate(null);
+    private void onRedeemChanged(String redeem) {
+        this.redeem.setText(redeem);
+    }
+
+    private void onTest() {
+        viewModel.test(null);
     }
 
     private void onGetBalance() {
         viewModel.getBalance(null);
     }
 
+    private void onDeposit() {
+        viewModel.deposit(new Double(depositAmount.getText().toString()));
+    }
+
+    private void onRedeem() {
+        viewModel.redeem(new Double(redeemAmount.getText().toString()));
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        exchangeRate.setText(getString(R.string.unknown_balance_without_symbol));
+        test.setText("--");
+        balance.setText("--");
+        deposit.setText("--");
+        redeem.setText("--");
         //setTitle(getString(R.string.unknown_balance_without_symbol));
         //setSubtitle("");
         viewModel.prepare();

@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.aitivity.enterprise.wallet.repository.ATokenRepository;
 import com.aitivity.enterprise.wallet.repository.ATokenRepositoryType;
+import com.aitivity.enterprise.wallet.repository.LendingPoolRepository;
+import com.aitivity.enterprise.wallet.repository.LendingPoolRepositoryType;
 import com.google.gson.Gson;
 import com.wallet.crypto.trustapp.repository.EthereumNetworkRepository;
 import com.wallet.crypto.trustapp.repository.EthereumNetworkRepositoryType;
@@ -101,6 +103,22 @@ public class RepositoriesModule {
 			BlockExplorerClientType blockExplorerClient) {
 		TransactionLocalSource inMemoryCache = new TransactionInMemorySource();
 		return new ATokenRepository(
+				okHttpClient,
+				networkRepository,
+				accountKeystoreService,
+				inMemoryCache,
+				blockExplorerClient);
+	}
+
+	@Singleton
+	@Provides
+	LendingPoolRepositoryType provideLendingPoolRepository(
+			OkHttpClient okHttpClient,
+			EthereumNetworkRepositoryType networkRepository,
+			AccountKeystoreService accountKeystoreService,
+			BlockExplorerClientType blockExplorerClient) {
+		TransactionLocalSource inMemoryCache = new TransactionInMemorySource();
+		return new LendingPoolRepository(
 				okHttpClient,
 				networkRepository,
 				accountKeystoreService,

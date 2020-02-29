@@ -203,10 +203,11 @@
     <string name="facebook">Facebook</string>
 
     <!-- Aave-->
-    <string name="getExchangeRate">Get exchange rate</string>
-    <string name="exchangeRate">Exchange rate</string>
+    <string name="deposit">Deposit</string>
+    <string name="redeem">Redeem</string>
     <string name="balance">Balance</string>
     <string name="action_add_amount">Add amount</string>
     <string name="action_withdraw_amount">Withdraw amount</string>
     <string name="get_balance">Get balance</string>
+    <string name="test">Test</string>
 </resources>

@@ -89,6 +89,33 @@ public class GethKeystoreAccountService implements AccountKeystoreService {
     }
 
     @Override
+    public Single<byte[]> signTransaction(Wallet signer, String signerPassword, Transaction tx, long chainId) {
+        return Single.fromCallable(() -> {
+            BigInt chain = new BigInt(chainId); // Chain identifier of the main net
+            org.ethereum.geth.Account gethAccount = findAccount(signer.address);
+            keyStore.unlock(gethAccount, signerPassword);
+            Transaction signed = keyStore.signTx(gethAccount, tx, chain);
+            keyStore.lock(gethAccount.getAddress());
+            return signed.encodeRLP();
+        })
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public byte[] signTransactionBin(Wallet signer, String signerPassword, Transaction tx, long chainId){
+        try {
+            BigInt chain = new BigInt(chainId); // Chain identifier of the main net
+            org.ethereum.geth.Account gethAccount = findAccount(signer.address);
+            keyStore.unlock(gethAccount, signerPassword);
+            Transaction signed = keyStore.signTx(gethAccount, tx, chain);
+            keyStore.lock(gethAccount.getAddress());
+            return signed.encodeRLP();
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public Single<byte[]> signTransaction(Wallet signer, String signerPassword, String toAddress, BigInteger amount, BigInteger gasPrice, BigInteger gasLimit, long nonce, byte[] data, long chainId) {
         return Single.fromCallable(() -> {
             BigInt value = new BigInt(0);
@@ -118,6 +145,7 @@ public class GethKeystoreAccountService implements AccountKeystoreService {
         })
                 .subscribeOn(Schedulers.io());
     }
+
 
     @Override
     public boolean hasAccount(String address) {

@@ -13,9 +13,10 @@ import com.wallet.crypto.trustapp.viewmodel.BaseViewModel;
 public class AaveViewModel extends BaseViewModel {
     private final MutableLiveData<NetworkInfo> defaultNetwork = new MutableLiveData<>();
     private final MutableLiveData<Wallet> defaultWallet = new MutableLiveData<>();
-    private final MutableLiveData<String> exchangeRate = new MutableLiveData<>();
     private final MutableLiveData<String> balance = new MutableLiveData<>();
-    private final MutableLiveData<String> balanceDecoded = new MutableLiveData<>();
+    private final MutableLiveData<String> redeem = new MutableLiveData<>();
+    private final MutableLiveData<String> test = new MutableLiveData<>();
+    private final MutableLiveData<String> deposit = new MutableLiveData<>();
 
     private final FindDefaultNetworkInteract findDefaultNetworkInteract;
     private final FindDefaultWalletInteract findDefaultWalletInteract;
@@ -29,18 +30,33 @@ public class AaveViewModel extends BaseViewModel {
         this.aaveInfoInteract = aaveInfoInteract;
     }
 
-    public void getExchangeRate(String from) {
-        progress.postValue(true);
-        disposable = aaveInfoInteract
-                .getExchangeRate(defaultWallet.getValue())
-                .subscribe(this::onGetExchangeRate, this::onError);
-    }
-
     public void getBalance(String from) {
         progress.postValue(true);
         disposable = aaveInfoInteract
                 .getBalance(defaultWallet.getValue())
                 .subscribe(this::onGetBalance, this::onError);
+    }
+
+    public void redeem(double value) {
+        progress.postValue(true);
+        disposable = aaveInfoInteract
+                .redeem(defaultWallet.getValue(), value)
+                .subscribe(this::onRedeem, this::onError);
+    }
+
+
+    public void test(String from) {
+        progress.postValue(true);
+        disposable = aaveInfoInteract
+                .test(defaultWallet.getValue())
+                .subscribe(this::onTest, this::onError);
+    }
+
+    public void deposit(double value) {
+        progress.postValue(true);
+        disposable = aaveInfoInteract
+                .deposit(defaultWallet.getValue(), value)
+                .subscribe(this::onDeposit, this::onError);
     }
 
     public void prepare() {
@@ -58,25 +74,32 @@ public class AaveViewModel extends BaseViewModel {
         return defaultWallet;
     }
 
-    public LiveData<String> getExchangeRate() { return exchangeRate; }
-
     public LiveData<String> getBalance() { return balance; }
 
-    public LiveData<String> getBalanceDecoded() { return balanceDecoded; }
+    public LiveData<String> redeem() { return redeem; }
 
-    private void onGetExchangeRate(String exchangeRate) {
+    public LiveData<String> test() { return test; }
+
+    public LiveData<String> deposit() { return deposit; }
+
+    private void onTest(String test) {
         progress.postValue(false);
-        this.exchangeRate.postValue(exchangeRate);
+        this.test.postValue(test);
     }
 
     private void onGetBalance(String balance) {
         progress.postValue(false);
         this.balance.postValue(balance);
-        if (this.balance.getValue() != null && this.exchangeRate.getValue() != null){
-            Float balanceDecodedlong = (Float.valueOf(this.balance.getValue()) / Float.valueOf(this.exchangeRate.getValue()));
-            this.balanceDecoded.postValue(balanceDecodedlong.toString());
-        }
+    }
 
+    private void onRedeem(String redeem) {
+        progress.postValue(false);
+        this.redeem.postValue(redeem);
+    }
+
+    private void onDeposit(String deposit) {
+        progress.postValue(false);
+        this.deposit.postValue(deposit);
     }
 
     private void onDefaultNetwork(NetworkInfo networkInfo) {
