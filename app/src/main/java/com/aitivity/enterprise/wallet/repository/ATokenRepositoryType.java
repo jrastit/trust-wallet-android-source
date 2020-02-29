@@ -1,4 +1,4 @@
-package com.aitivity.enterprise.wallet.aave;
+package com.aitivity.enterprise.wallet.repository;
 
 import com.wallet.crypto.trustapp.entity.Wallet;
 

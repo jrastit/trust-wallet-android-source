@@ -2,8 +2,8 @@ package com.wallet.crypto.trustapp.di;
 
 import android.content.Context;
 
-import com.aitivity.enterprise.wallet.aave.ATokenRepository;
-import com.aitivity.enterprise.wallet.aave.ATokenRepositoryType;
+import com.aitivity.enterprise.wallet.repository.ATokenRepository;
+import com.aitivity.enterprise.wallet.repository.ATokenRepositoryType;
 import com.google.gson.Gson;
 import com.wallet.crypto.trustapp.repository.EthereumNetworkRepository;
 import com.wallet.crypto.trustapp.repository.EthereumNetworkRepositoryType;

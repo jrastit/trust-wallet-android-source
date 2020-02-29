@@ -1,4 +1,4 @@
-package com.wallet.crypto.trustapp.router;
+package com.aitivity.enterprise.wallet.router;
 
 import android.content.Context;
 import android.content.Intent;

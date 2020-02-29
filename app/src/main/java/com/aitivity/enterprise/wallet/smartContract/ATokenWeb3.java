@@ -1,4 +1,4 @@
-package com.aitivity.enterprise.wallet.aave;
+package com.aitivity.enterprise.wallet.smartContract;
 
 import com.wallet.crypto.trustapp.entity.NetworkInfo;
 import com.wallet.crypto.trustapp.repository.EthereumNetworkRepositoryType;

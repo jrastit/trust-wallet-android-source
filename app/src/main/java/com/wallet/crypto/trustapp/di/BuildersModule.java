@@ -1,5 +1,6 @@
 package com.wallet.crypto.trustapp.di;
 
+import com.aitivity.enterprise.wallet.di.AaveModule;
 import com.wallet.crypto.trustapp.ui.AaveActivity;
 import com.wallet.crypto.trustapp.ui.AddTokenActivity;
 import com.wallet.crypto.trustapp.ui.ConfirmationActivity;

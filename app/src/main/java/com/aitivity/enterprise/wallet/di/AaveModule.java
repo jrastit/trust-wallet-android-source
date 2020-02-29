@@ -1,4 +1,4 @@
-package com.wallet.crypto.trustapp.di;
+package com.aitivity.enterprise.wallet.di;
 
 
 import dagger.Module;

@@ -1,10 +1,10 @@
-package com.wallet.crypto.trustapp.viewmodel;
+package com.aitivity.enterprise.wallet.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.wallet.crypto.trustapp.interact.AaveInfoInteract;
+import com.aitivity.enterprise.wallet.interact.AaveInfoInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultNetworkInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultWalletInteract;
 

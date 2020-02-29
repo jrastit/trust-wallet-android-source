@@ -1,13 +1,14 @@
-package com.wallet.crypto.trustapp.viewmodel;
+package com.aitivity.enterprise.wallet.viewmodel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import com.wallet.crypto.trustapp.entity.NetworkInfo;
 import com.wallet.crypto.trustapp.entity.Wallet;
-import com.wallet.crypto.trustapp.interact.AaveInfoInteract;
+import com.aitivity.enterprise.wallet.interact.AaveInfoInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultNetworkInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultWalletInteract;
+import com.wallet.crypto.trustapp.viewmodel.BaseViewModel;
 
 public class AaveViewModel extends BaseViewModel {
     private final MutableLiveData<NetworkInfo> defaultNetwork = new MutableLiveData<>();

@@ -10,8 +10,8 @@ import android.widget.TextView;
 import com.wallet.crypto.trustapp.R;
 import com.wallet.crypto.trustapp.entity.NetworkInfo;
 import com.wallet.crypto.trustapp.router.TransactionsRouter;
-import com.wallet.crypto.trustapp.viewmodel.AaveViewModel;
-import com.wallet.crypto.trustapp.viewmodel.AaveViewModelFactory;
+import com.aitivity.enterprise.wallet.viewmodel.AaveViewModel;
+import com.aitivity.enterprise.wallet.viewmodel.AaveViewModelFactory;
 
 import javax.inject.Inject;
 

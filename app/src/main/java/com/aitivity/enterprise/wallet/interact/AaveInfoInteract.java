@@ -1,6 +1,6 @@
-package com.wallet.crypto.trustapp.interact;
+package com.aitivity.enterprise.wallet.interact;
 
-import com.aitivity.enterprise.wallet.aave.ATokenRepositoryType;
+import com.aitivity.enterprise.wallet.repository.ATokenRepositoryType;
 import com.wallet.crypto.trustapp.entity.Wallet;
 import com.wallet.crypto.trustapp.repository.PasswordStore;
 
