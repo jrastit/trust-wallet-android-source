@@ -5,7 +5,10 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.net.Uri;
 
+import com.aitivity.enterprise.wallet.interact.AaveInfoInteract;
+import com.aitivity.enterprise.wallet.interact.ENSTestInteract;
 import com.aitivity.enterprise.wallet.interact.GetAAVEBalance;
+import com.aitivity.enterprise.wallet.router.ENSTestRouter;
 import com.wallet.crypto.trustapp.entity.NetworkInfo;
 import com.wallet.crypto.trustapp.entity.Transaction;
 import com.wallet.crypto.trustapp.entity.Wallet;
@@ -34,6 +37,7 @@ public class TransactionsViewModel extends BaseViewModel {
     private final MutableLiveData<NetworkInfo> defaultNetwork = new MutableLiveData<>();
     private final MutableLiveData<Wallet> defaultWallet = new MutableLiveData<>();
     private final MutableLiveData<Transaction[]> transactions = new MutableLiveData<>();
+    private final MutableLiveData<String> ensRegister = new MutableLiveData<>();
     private final MutableLiveData<Map<String, String>> defaultWalletBalance = new MutableLiveData<>();
     private final MutableLiveData<Map<String, String>> aaveBalance = new MutableLiveData<>();
 
@@ -47,6 +51,7 @@ public class TransactionsViewModel extends BaseViewModel {
     private final ManageWalletsRouter manageWalletsRouter;
     private final SettingsRouter settingsRouter;
     private final AaveRouter aaveRouter;
+    private final ENSTestRouter eNSTestRouter;
     private final SendRouter sendRouter;
     private final TransactionDetailRouter transactionDetailRouter;
     private final MyAddressRouter myAddressRouter;
@@ -54,6 +59,7 @@ public class TransactionsViewModel extends BaseViewModel {
     private final ExternalBrowserRouter externalBrowserRouter;
     private Disposable balanceDisposable;
     private Disposable transactionDisposable;
+    private final ENSTestInteract ensTestInteract;
 
     TransactionsViewModel(
             FindDefaultNetworkInteract findDefaultNetworkInteract,
@@ -61,9 +67,11 @@ public class TransactionsViewModel extends BaseViewModel {
             FetchTransactionsInteract fetchTransactionsInteract,
             GetDefaultWalletBalance getDefaultWalletBalance,
             GetAAVEBalance getAAVEBalance,
+            ENSTestInteract ensTestInteract,
             ManageWalletsRouter manageWalletsRouter,
             SettingsRouter settingsRouter,
             AaveRouter aaveRouter,
+            ENSTestRouter eNSTestRouter,
             SendRouter sendRouter,
             TransactionDetailRouter transactionDetailRouter,
             MyAddressRouter myAddressRouter,
@@ -73,10 +81,12 @@ public class TransactionsViewModel extends BaseViewModel {
         this.findDefaultWalletInteract = findDefaultWalletInteract;
         this.getDefaultWalletBalance = getDefaultWalletBalance;
         this.getAAVEBalance = getAAVEBalance;
+        this.ensTestInteract = ensTestInteract;
         this.fetchTransactionsInteract = fetchTransactionsInteract;
         this.manageWalletsRouter = manageWalletsRouter;
         this.settingsRouter = settingsRouter;
         this.aaveRouter = aaveRouter;
+        this.eNSTestRouter = eNSTestRouter;
         this.sendRouter = sendRouter;
         this.transactionDetailRouter = transactionDetailRouter;
         this.myAddressRouter = myAddressRouter;
@@ -87,9 +97,10 @@ public class TransactionsViewModel extends BaseViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-
-        transactionDisposable.dispose();
-        balanceDisposable.dispose();
+        if (transactionDisposable != null)
+            transactionDisposable.dispose();
+        if (balanceDisposable != null)
+            balanceDisposable.dispose();
     }
 
     public LiveData<NetworkInfo> defaultNetwork() {
@@ -111,6 +122,8 @@ public class TransactionsViewModel extends BaseViewModel {
     public LiveData<Map<String, String>> aaveBalance() {
         return aaveBalance;
     }
+
+    public LiveData<String> ensRegister(){ return ensRegister;}
 
     public void prepare() {
         progress.postValue(true);
@@ -150,11 +163,26 @@ public class TransactionsViewModel extends BaseViewModel {
                 .subscribe(this::onDefaultWallet, this::onError);
     }
 
+    public void ensRegister(String name) {
+        progress.postValue(true);
+        disposable = ensTestInteract
+                .register(defaultWallet.getValue(), defaultWallet.getValue().address, name)
+                .subscribe(this::onRegister, this::onError);
+    }
+
     private void onDefaultWallet(Wallet wallet) {
         defaultWallet.setValue(wallet);
         getBalance();
         getBalanceAAVE(wallet);
-        fetchTransactions();
+
+
+        //Don't work
+        //fetchTransactions();
+        progress.postValue(false);
+    }
+
+    private void onRegister(String status) {
+
     }
 
     private void onTransactions(Transaction[] transactions) {

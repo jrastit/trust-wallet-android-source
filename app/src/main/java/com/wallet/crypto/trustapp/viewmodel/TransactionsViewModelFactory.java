@@ -4,7 +4,10 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
+import com.aitivity.enterprise.wallet.interact.ENSTestInteract;
 import com.aitivity.enterprise.wallet.interact.GetAAVEBalance;
+import com.aitivity.enterprise.wallet.router.ENSTestRouter;
+import com.aitivity.enterprise.wallet.smartContract.ENSTest;
 import com.wallet.crypto.trustapp.interact.FetchTransactionsInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultNetworkInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultWalletInteract;
@@ -24,10 +27,12 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
     private final FindDefaultWalletInteract findDefaultWalletInteract;
     private final GetDefaultWalletBalance getDefaultWalletBalance;
     private final GetAAVEBalance getAAVEBalance;
+    private final ENSTestInteract ensTestInteract;
     private final FetchTransactionsInteract fetchTransactionsInteract;
     private final ManageWalletsRouter manageWalletsRouter;
     private final SettingsRouter settingsRouter;
     private final AaveRouter aaveRouter;
+    private final ENSTestRouter eNSTestRouter;
     private final SendRouter sendRouter;
     private final TransactionDetailRouter transactionDetailRouter;
     private final MyAddressRouter myAddressRouter;
@@ -40,9 +45,11 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
             FetchTransactionsInteract fetchTransactionsInteract,
             GetDefaultWalletBalance getDefaultWalletBalance,
             GetAAVEBalance getAAVEBalance,
+            ENSTestInteract ensTestInteract,
             ManageWalletsRouter manageWalletsRouter,
             SettingsRouter settingsRouter,
             AaveRouter aaveRouter,
+            ENSTestRouter eNSTestRouter,
             SendRouter sendRouter,
             TransactionDetailRouter transactionDetailRouter,
             MyAddressRouter myAddressRouter,
@@ -52,10 +59,12 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
         this.findDefaultWalletInteract = findDefaultWalletInteract;
         this.getDefaultWalletBalance = getDefaultWalletBalance;
         this.getAAVEBalance = getAAVEBalance;
+        this.ensTestInteract = ensTestInteract;
         this.fetchTransactionsInteract = fetchTransactionsInteract;
         this.manageWalletsRouter = manageWalletsRouter;
         this.settingsRouter = settingsRouter;
         this.aaveRouter = aaveRouter;
+        this.eNSTestRouter = eNSTestRouter;
         this.sendRouter = sendRouter;
         this.transactionDetailRouter = transactionDetailRouter;
         this.myAddressRouter = myAddressRouter;
@@ -72,9 +81,11 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
                 fetchTransactionsInteract,
                 getDefaultWalletBalance,
                 getAAVEBalance,
+                ensTestInteract,
                 manageWalletsRouter,
                 settingsRouter,
                 aaveRouter,
+                eNSTestRouter,
                 sendRouter,
                 transactionDetailRouter,
                 myAddressRouter,

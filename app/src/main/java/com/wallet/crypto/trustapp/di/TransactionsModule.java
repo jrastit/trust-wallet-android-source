@@ -1,11 +1,17 @@
 package com.wallet.crypto.trustapp.di;
 
+import com.aitivity.enterprise.wallet.interact.ENSTestInteract;
 import com.aitivity.enterprise.wallet.interact.GetAAVEBalance;
+import com.aitivity.enterprise.wallet.repository.ENSTestRepository;
+import com.aitivity.enterprise.wallet.repository.ENSTestRepositoryType;
+import com.aitivity.enterprise.wallet.router.ENSTestRouter;
+import com.wallet.crypto.trustapp.entity.Wallet;
 import com.wallet.crypto.trustapp.interact.FetchTransactionsInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultNetworkInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultWalletInteract;
 import com.wallet.crypto.trustapp.interact.GetDefaultWalletBalance;
 import com.wallet.crypto.trustapp.repository.EthereumNetworkRepositoryType;
+import com.wallet.crypto.trustapp.repository.PasswordStore;
 import com.wallet.crypto.trustapp.repository.TransactionRepositoryType;
 import com.wallet.crypto.trustapp.repository.WalletRepositoryType;
 import com.aitivity.enterprise.wallet.router.AaveRouter;
@@ -30,9 +36,11 @@ class TransactionsModule {
             FetchTransactionsInteract fetchTransactionsInteract,
             GetDefaultWalletBalance getDefaultWalletBalance,
             GetAAVEBalance getAAVEBalance,
+            ENSTestInteract ensTestInteract,
             ManageWalletsRouter manageWalletsRouter,
             SettingsRouter settingsRouter,
             AaveRouter aaveRouter,
+            ENSTestRouter eNSTestRouter,
             SendRouter sendRouter,
             TransactionDetailRouter transactionDetailRouter,
             MyAddressRouter myAddressRouter,
@@ -44,9 +52,11 @@ class TransactionsModule {
                 fetchTransactionsInteract,
                 getDefaultWalletBalance,
                 getAAVEBalance,
+                ensTestInteract,
                 manageWalletsRouter,
                 settingsRouter,
                 aaveRouter,
+                eNSTestRouter,
                 sendRouter,
                 transactionDetailRouter,
                 myAddressRouter,
@@ -77,6 +87,12 @@ class TransactionsModule {
     }
 
     @Provides
+    ENSTestInteract provideENSTestInteract(ENSTestRepositoryType eNSTestRepository,
+                                           PasswordStore passwordStore){
+        return new ENSTestInteract(eNSTestRepository, passwordStore);
+    }
+
+    @Provides
     ManageWalletsRouter provideManageWalletsRouter() {
         return new ManageWalletsRouter();
     }
@@ -89,6 +105,11 @@ class TransactionsModule {
     @Provides
     AaveRouter provideAaveRouter() {
         return new AaveRouter();
+    }
+
+    @Provides
+    ENSTestRouter provideENSTestRouter() {
+        return new ENSTestRouter();
     }
 
     @Provides

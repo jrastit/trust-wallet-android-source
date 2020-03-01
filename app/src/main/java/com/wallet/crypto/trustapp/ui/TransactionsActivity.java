@@ -43,7 +43,6 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjection;
 
 import static com.wallet.crypto.trustapp.C.ETHEREUM_NETWORK_NAME;
-import static com.wallet.crypto.trustapp.C.ETH_SYMBOL;
 
 public class TransactionsActivity extends BaseNavigationActivity implements View.OnClickListener {
 
@@ -55,6 +54,8 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
     private TransactionsAdapter adapter;
     private Dialog dialog;
     private TextView balance;
+    private TextView ensName;
+    private TextView ensNameResult;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,6 +83,7 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
 
         systemView.attachRecyclerView(list);
         systemView.attachSwipeRefreshLayout(refreshLayout);
+        systemView.showEmpty();
 
         viewModel = ViewModelProviders.of(this, transactionsViewModelFactory)
                 .get(TransactionsViewModel.class);
@@ -92,9 +94,14 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
         viewModel.defaultWallet().observe(this, this::onDefaultWallet);
         viewModel.transactions().observe(this, this::onTransactions);
         viewModel.aaveBalance().observe(this, this::onAAVEBalanceChanged);
+        viewModel.ensRegister().observe(this, this::onENSRegister);
 
-
-        refreshLayout.setOnRefreshListener(viewModel::fetchTransactions);
+        findViewById(R.id.ensNameBtn).setOnClickListener(view -> onENSNameBtn());
+        ensName = findViewById(R.id.ensName);
+        ensNameResult = findViewById(R.id.ensNameResult);
+        //refreshLayout.setOnRefreshListener(viewModel::fetchTransactions);
+        refreshLayout.setOnRefreshListener(viewModel::getBalance);
+        //refreshLayout.setRefreshing(false);
     }
 
     private void onTransactionClick(View view, Transaction transaction) {
@@ -183,6 +190,10 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
         return false;
     }
 
+    private void onENSNameBtn() {
+        viewModel.ensRegister(ensName.getText().toString());
+    }
+
     private void onBalanceChanged(Map<String, String> balance) {
         ActionBar actionBar = getSupportActionBar();
         NetworkInfo networkInfo = viewModel.defaultNetwork().getValue();
@@ -210,6 +221,10 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
         } else {
             balance.setText("AAVE $" + balances.get(C.USD_SYMBOL));
         }
+    }
+
+    private void onENSRegister(String result){
+        ensNameResult.setText(result);
     }
 
     private void onTransactions(Transaction[] transaction) {

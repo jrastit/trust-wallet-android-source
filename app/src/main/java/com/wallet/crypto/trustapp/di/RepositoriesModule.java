@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.aitivity.enterprise.wallet.repository.ATokenRepository;
 import com.aitivity.enterprise.wallet.repository.ATokenRepositoryType;
+import com.aitivity.enterprise.wallet.repository.ENSTestRepository;
+import com.aitivity.enterprise.wallet.repository.ENSTestRepositoryType;
 import com.aitivity.enterprise.wallet.repository.LendingPoolRepository;
 import com.aitivity.enterprise.wallet.repository.LendingPoolRepositoryType;
 import com.google.gson.Gson;
@@ -103,6 +105,22 @@ public class RepositoriesModule {
 			BlockExplorerClientType blockExplorerClient) {
 		TransactionLocalSource inMemoryCache = new TransactionInMemorySource();
 		return new ATokenRepository(
+				okHttpClient,
+				networkRepository,
+				accountKeystoreService,
+				inMemoryCache,
+				blockExplorerClient);
+	}
+
+	@Singleton
+	@Provides
+	ENSTestRepositoryType provideENSTestRepository(
+			OkHttpClient okHttpClient,
+			EthereumNetworkRepositoryType networkRepository,
+			AccountKeystoreService accountKeystoreService,
+			BlockExplorerClientType blockExplorerClient) {
+		TransactionLocalSource inMemoryCache = new TransactionInMemorySource();
+		return new ENSTestRepository(
 				okHttpClient,
 				networkRepository,
 				accountKeystoreService,
