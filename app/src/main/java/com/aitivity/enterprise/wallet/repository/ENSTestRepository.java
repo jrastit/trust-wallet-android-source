@@ -1,5 +1,7 @@
 package com.aitivity.enterprise.wallet.repository;
 
+import android.text.TextUtils;
+
 import com.aitivity.enterprise.wallet.MyTransactionManager;
 import com.aitivity.enterprise.wallet.MyWalletUtil;
 import com.aitivity.enterprise.wallet.smartContract.ENSTestWeb3;
@@ -19,8 +21,10 @@ import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.ReadonlyTransactionManager;
 import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.utils.Numeric;
 
 import java.math.BigInteger;
+import java.util.Collections;
 
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
@@ -122,6 +126,18 @@ public class ENSTestRepository implements ENSTestRepositoryType {
         }).subscribeOn(Schedulers.io());
     }
 
+    // String to 64 length HexString (equivalent to 32 Hex lenght)
+    public static String asciiToHex(String asciiValue)
+    {
+        char[] chars = asciiValue.toCharArray();
+        StringBuffer hex = new StringBuffer();
+        for (int i = 0; i < chars.length; i++)
+        {
+            hex.append(Integer.toHexString((int) chars[i]));
+        }
+
+        return hex.toString() + TextUtils.join("", Collections.nCopies(32 - (hex.length()/2), "00"));
+    }
 
     public Single<String> register(Wallet from, String addr, String name, String password){
         TransactionManager transactionManager = new MyTransactionManager(web3j,
@@ -143,11 +159,15 @@ public class ENSTestRepository implements ENSTestRepositoryType {
 
         return Single.fromCallable(() -> {
             try {
-                TransactionReceipt tx = ENSTestWeb3.register(new Bytes32(name.getBytes()), new Address(addr)).send();
+
+                String strInHex = asciiToHex(name);
+                Bytes32 name32 = new Bytes32(Numeric.hexStringToByteArray(strInHex));
+
+                TransactionReceipt tx = ENSTestWeb3.register(name32, new Address(addr)).send();
 
                 return "Success: " + tx.getTransactionHash();
             }catch (Exception e){
-                return "Error: " + e.getMessage();
+                return "Error registrering : " + name + " : " + e.getMessage();
             }
         }).subscribeOn(Schedulers.io());
     }

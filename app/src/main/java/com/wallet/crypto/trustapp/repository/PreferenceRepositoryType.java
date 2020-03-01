@@ -3,6 +3,10 @@ package com.wallet.crypto.trustapp.repository;
 import com.wallet.crypto.trustapp.entity.GasSettings;
 
 public interface PreferenceRepositoryType {
+	String getCurrentWalletName();
+
+	void setCurrentWalletName(String name);
+
 	String getCurrentWalletAddress();
 	void setCurrentWalletAddress(String address);
 

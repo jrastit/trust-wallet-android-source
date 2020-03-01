@@ -16,11 +16,22 @@ public class SharedPreferenceRepository implements PreferenceRepositoryType {
 	private static final String GAS_PRICE_KEY  ="gas_price";
     private static final String GAS_LIMIT_KEY  ="gas_limit";
 	private static final String GAS_LIMIT_FOR_TOKENS_KEY = "gas_limit_for_tokens";
+	private static final String WALLET_NAME = "name";
 
 	private final SharedPreferences pref;
 
 	public SharedPreferenceRepository(Context context) {
 		pref = PreferenceManager.getDefaultSharedPreferences(context);
+	}
+
+	@Override
+	public String getCurrentWalletName() {
+		return pref.getString(WALLET_NAME, null);
+	}
+
+	@Override
+	public void setCurrentWalletName(String name) {
+		pref.edit().putString(WALLET_NAME, name).apply();
 	}
 
 	@Override

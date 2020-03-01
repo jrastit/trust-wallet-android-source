@@ -64,8 +64,9 @@
         <TextView
             android:id="@+id/ensNameResult"
             style="@style/AppTheme.Toolbar.Title"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="match_parent"
             android:gravity="center_vertical|center"
             android:paddingLeft="@dimen/big_padding"
             android:layout_marginTop="20px"

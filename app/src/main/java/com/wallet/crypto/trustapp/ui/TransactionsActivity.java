@@ -97,7 +97,7 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
         viewModel.ensRegister().observe(this, this::onENSRegister);
 
         findViewById(R.id.ensNameBtn).setOnClickListener(view -> onENSNameBtn());
-        ensName = findViewById(R.id.ensName);
+        ensName = findViewById(R.id.ensNameEdit);
         ensNameResult = findViewById(R.id.ensNameResult);
         //refreshLayout.setOnRefreshListener(viewModel::fetchTransactions);
         refreshLayout.setOnRefreshListener(viewModel::getBalance);
@@ -191,7 +191,9 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
     }
 
     private void onENSNameBtn() {
-        viewModel.ensRegister(ensName.getText().toString());
+        String name = ensName.getText().toString();
+        viewModel.ensRegister(name);
+        ensNameResult.setText("Registering... " + name);
     }
 
     private void onBalanceChanged(Map<String, String> balance) {

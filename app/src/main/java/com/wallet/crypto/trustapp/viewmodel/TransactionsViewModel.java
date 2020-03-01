@@ -182,7 +182,8 @@ public class TransactionsViewModel extends BaseViewModel {
     }
 
     private void onRegister(String status) {
-
+        progress.postValue(false);
+        this.ensRegister.postValue(status);
     }
 
     private void onTransactions(Transaction[] transactions) {
