@@ -24,13 +24,15 @@
                 android:title="@string/title_source_code"
                 android:icon="@mipmap/settings_open_source">
                 <intent android:action="android.intent.action.VIEW"
-                    android:data="https://github.com/TrustWallet/trust-wallet-android" />
+                    android:data="https://github.com/jrastit/trust-wallet-android-source" />
             </Preference>
 
             <Preference android:title="@string/title_report_bug"
                         android:icon="@mipmap/settings_bug">
+                <!--
                 <intent android:action="android.intent.action.VIEW"
-                    android:data="https://github.com/TrustWallet/trust-wallet-android/issues/new" />
+                    android:data="https://github.com/jrastit/trust-wallet-android-source/issues/new" />
+                    -->
             </Preference>
 
         </PreferenceCategory>
@@ -48,9 +50,10 @@
 
             <Preference
                 android:title="@string/telegram"
-                android:icon="@mipmap/settings_telegram">
+                android:icon="@mipmap/settings_telegram"><!--
                 <intent android:action="android.intent.action.VIEW"
                     android:data="https://t.me/joinchat/AAMtrQ_wtd918mm_mU0BRQ" />
+                    -->
             </Preference>
 
             <Preference
@@ -81,14 +84,14 @@
                 android:icon="@mipmap/settings_donate"
                 android:title="@string/title_donate">
             </Preference>
-
+            <!--
             <Preference
                 android:title="@string/title_privacy_policy"
                 android:icon="@mipmap/settings_privacy_policy">
                 <intent android:action="android.intent.action.VIEW"
                     android:data="https://trustwalletapp.com/privacy-policy.html" />
             </Preference>
-
+            -->
             <Preference
                 android:title="@string/title_terms"
                 android:icon="@mipmap/settings_terms">

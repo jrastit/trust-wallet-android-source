@@ -5,8 +5,9 @@
 	<color name="white">#FFFFFFFF</color>
 	<color name="black">#313849</color>
 
-	<color name="colorPrimary">#2e91db</color>
-	<color name="colorPrimaryDark">#1E76CE</color>
+	<color name="colorPrimary">#2980b9</color>
+	<color name="colorPrimaryDark">#2c3e50</color>
+	<color name="colorPrimaryDark2">#d35400</color>
 	<color name="colorAccent">#2e91db</color>
 
     <!--<color name="title">#89000000</color>-->

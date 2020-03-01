@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.wallet.crypto.trustapp.R;
 import com.wallet.crypto.trustapp.entity.ErrorEnvelope;
@@ -33,6 +34,7 @@ public class TokensActivity extends BaseActivity implements View.OnClickListener
     private SystemView systemView;
     private TokensAdapter adapter;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
@@ -42,7 +44,6 @@ public class TokensActivity extends BaseActivity implements View.OnClickListener
         setContentView(R.layout.activity_tokens);
 
         toolbar();
-
         adapter = new TokensAdapter(this::onTokenClick);
         SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh_layout);
         systemView = findViewById(R.id.system_view);

@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wallet.crypto.trustapp.C;
@@ -53,6 +54,7 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
     private SystemView systemView;
     private TransactionsAdapter adapter;
     private Dialog dialog;
+    private TextView balance;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,12 +62,14 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_transactions);
-
         toolbar();
         setTitle(getString(R.string.unknown_balance_with_symbol));
         setSubtitle("");
         initBottomNavigation();
         dissableDisplayHomeAsUp();
+
+        balance = findViewById(R.id.defiBalance);
+        balance.setText("DEFI -- ETH");
 
         adapter = new TransactionsAdapter(this::onTransactionClick);
         SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh_layout);
@@ -87,6 +91,8 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
         viewModel.defaultWalletBalance().observe(this, this::onBalanceChanged);
         viewModel.defaultWallet().observe(this, this::onDefaultWallet);
         viewModel.transactions().observe(this, this::onTransactions);
+        viewModel.aaveBalance().observe(this, this::onAAVEBalanceChanged);
+
 
         refreshLayout.setOnRefreshListener(viewModel::fetchTransactions);
     }
@@ -104,6 +110,10 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
         adapter.clear();
         viewModel.prepare();
         checkRoot();
+
+
+        balance.setText("DEFI -- ETH");
+
     }
 
     @Override
@@ -186,6 +196,19 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
         } else {
             actionBar.setTitle("$" + balance.get(C.USD_SYMBOL));
             actionBar.setSubtitle(balance.get(networkInfo.symbol) + " " + networkInfo.symbol);
+        }
+    }
+
+    private void onAAVEBalanceChanged(Map<String, String> balances) {
+        NetworkInfo networkInfo = viewModel.defaultNetwork().getValue();
+        Wallet wallet = viewModel.defaultWallet().getValue();
+        if (balance == null || networkInfo == null || wallet == null) {
+            return;
+        }
+        if (TextUtils.isEmpty(balances.get(C.USD_SYMBOL))) {
+            balance.setText("AAVE " + balances.get(networkInfo.symbol) + " " + networkInfo.symbol);
+        } else {
+            balance.setText("AAVE $" + balances.get(C.USD_SYMBOL));
         }
     }
 

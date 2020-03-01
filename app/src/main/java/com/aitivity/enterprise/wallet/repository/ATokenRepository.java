@@ -24,6 +24,8 @@ import org.web3j.tx.gas.ContractGasProvider;
 
 import java.math.BigInteger;
 
+import javax.inject.Inject;
+
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;

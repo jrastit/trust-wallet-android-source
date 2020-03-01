@@ -206,7 +206,8 @@
     <string name="deposit">Deposit</string>
     <string name="redeem">Redeem</string>
     <string name="balance">Balance</string>
-    <string name="action_add_amount">Add amount</string>
+    <string name="action_add_amount_deposit">Add amount to deposit in ETH</string>
+    <string name="action_add_amount_redeem">Add amount to redeem in ETH</string>
     <string name="action_withdraw_amount">Withdraw amount</string>
     <string name="get_balance">Get balance</string>
     <string name="test">Test</string>

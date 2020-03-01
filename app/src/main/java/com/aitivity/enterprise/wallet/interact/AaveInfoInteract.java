@@ -16,7 +16,9 @@ public class AaveInfoInteract {
     private final PasswordStore passwordStore;
 
     @Inject
-    public AaveInfoInteract(LendingPoolRepositoryType lendingPoolRepository, ATokenRepositoryType atokenRepository, PasswordStore passwordStore) {
+    public AaveInfoInteract(LendingPoolRepositoryType lendingPoolRepository,
+                            ATokenRepositoryType atokenRepository,
+                            PasswordStore passwordStore) {
         this.lendingPoolRepository = lendingPoolRepository;
         this.atokenRepository = atokenRepository;
         this.passwordStore = passwordStore;

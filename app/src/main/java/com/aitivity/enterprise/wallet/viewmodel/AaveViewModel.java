@@ -3,32 +3,57 @@ package com.aitivity.enterprise.wallet.viewmodel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
+import com.aitivity.enterprise.wallet.interact.GetAAVEBalance;
 import com.wallet.crypto.trustapp.entity.NetworkInfo;
 import com.wallet.crypto.trustapp.entity.Wallet;
 import com.aitivity.enterprise.wallet.interact.AaveInfoInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultNetworkInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultWalletInteract;
+import com.wallet.crypto.trustapp.interact.GetDefaultWalletBalance;
 import com.wallet.crypto.trustapp.viewmodel.BaseViewModel;
 
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+
 public class AaveViewModel extends BaseViewModel {
+
+    private static final long GET_BALANCE_INTERVAL = 8;
+
     private final MutableLiveData<NetworkInfo> defaultNetwork = new MutableLiveData<>();
     private final MutableLiveData<Wallet> defaultWallet = new MutableLiveData<>();
     private final MutableLiveData<String> balance = new MutableLiveData<>();
     private final MutableLiveData<String> redeem = new MutableLiveData<>();
     private final MutableLiveData<String> test = new MutableLiveData<>();
     private final MutableLiveData<String> deposit = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, String>> aaveBalance = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, String>> defaultWalletBalance = new MutableLiveData<>();
 
+
+    private final GetAAVEBalance getAAVEBalance;
+    private final GetDefaultWalletBalance getDefaultWalletBalance;
     private final FindDefaultNetworkInteract findDefaultNetworkInteract;
     private final FindDefaultWalletInteract findDefaultWalletInteract;
     private final AaveInfoInteract aaveInfoInteract;
 
-    public AaveViewModel(FindDefaultNetworkInteract findDefaultNetworkInteract,
-                         FindDefaultWalletInteract findDefaultWalletInteract,
-                         AaveInfoInteract aaveInfoInteract) {
+    private Disposable balanceDisposable;
+
+    public AaveViewModel(
+            GetAAVEBalance getAAVEBalance,
+            GetDefaultWalletBalance getDefaultWalletBalance,
+            FindDefaultNetworkInteract findDefaultNetworkInteract,
+            FindDefaultWalletInteract findDefaultWalletInteract,
+            AaveInfoInteract aaveInfoInteract) {
+        this.getDefaultWalletBalance = getDefaultWalletBalance;
+        this.getAAVEBalance = getAAVEBalance;
         this.findDefaultNetworkInteract = findDefaultNetworkInteract;
         this.findDefaultWalletInteract = findDefaultWalletInteract;
         this.aaveInfoInteract = aaveInfoInteract;
     }
+
+
 
     public void getBalance(String from) {
         progress.postValue(true);
@@ -74,13 +99,21 @@ public class AaveViewModel extends BaseViewModel {
         return defaultWallet;
     }
 
-    public LiveData<String> getBalance() { return balance; }
+    public LiveData<String> balance() { return balance; }
 
     public LiveData<String> redeem() { return redeem; }
 
     public LiveData<String> test() { return test; }
 
     public LiveData<String> deposit() { return deposit; }
+
+    public LiveData<Map<String, String>> aaveBalance() {
+        return aaveBalance;
+    }
+
+    public LiveData<Map<String, String>> defaultWalletBalance() {
+        return defaultWalletBalance;
+    }
 
     private void onTest(String test) {
         progress.postValue(false);
@@ -109,9 +142,24 @@ public class AaveViewModel extends BaseViewModel {
                 .subscribe(this::onDefaultWallet, this::onError);
     }
 
-    private void onDefaultWallet(Wallet wallet) {
-        defaultWallet.setValue(wallet);
+    public void getBalanceAAVE(Wallet wallet) {
+        balanceDisposable = Observable.interval(0, GET_BALANCE_INTERVAL, TimeUnit.SECONDS)
+                .doOnNext(l -> getAAVEBalance.getBalance(defaultWallet.getValue()).subscribe(aaveBalance::postValue, t -> {}))
+                .subscribe();
     }
 
+    public void getBalance() {
+        balanceDisposable = Observable.interval(0, GET_BALANCE_INTERVAL, TimeUnit.SECONDS)
+                .doOnNext(l -> getDefaultWalletBalance
+                        .get(defaultWallet.getValue())
+                        .subscribe(defaultWalletBalance::postValue, t -> {}))
+                .subscribe();
+    }
+
+    private void onDefaultWallet(Wallet wallet) {
+        defaultWallet.setValue(wallet);
+        getBalanceAAVE(wallet);
+        getBalance();
+    }
 
 }

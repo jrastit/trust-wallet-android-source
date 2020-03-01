@@ -1,5 +1,6 @@
 package com.wallet.crypto.trustapp.di;
 
+import com.aitivity.enterprise.wallet.interact.GetAAVEBalance;
 import com.wallet.crypto.trustapp.interact.FetchTransactionsInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultNetworkInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultWalletInteract;
@@ -28,6 +29,7 @@ class TransactionsModule {
             FindDefaultWalletInteract findDefaultWalletInteract,
             FetchTransactionsInteract fetchTransactionsInteract,
             GetDefaultWalletBalance getDefaultWalletBalance,
+            GetAAVEBalance getAAVEBalance,
             ManageWalletsRouter manageWalletsRouter,
             SettingsRouter settingsRouter,
             AaveRouter aaveRouter,
@@ -41,6 +43,7 @@ class TransactionsModule {
                 findDefaultWalletInteract,
                 fetchTransactionsInteract,
                 getDefaultWalletBalance,
+                getAAVEBalance,
                 manageWalletsRouter,
                 settingsRouter,
                 aaveRouter,

@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.net.Uri;
 
+import com.aitivity.enterprise.wallet.interact.GetAAVEBalance;
 import com.wallet.crypto.trustapp.entity.NetworkInfo;
 import com.wallet.crypto.trustapp.entity.Transaction;
 import com.wallet.crypto.trustapp.entity.Wallet;
@@ -34,10 +35,13 @@ public class TransactionsViewModel extends BaseViewModel {
     private final MutableLiveData<Wallet> defaultWallet = new MutableLiveData<>();
     private final MutableLiveData<Transaction[]> transactions = new MutableLiveData<>();
     private final MutableLiveData<Map<String, String>> defaultWalletBalance = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, String>> aaveBalance = new MutableLiveData<>();
+
 
     private final FindDefaultNetworkInteract findDefaultNetworkInteract;
     private final FindDefaultWalletInteract findDefaultWalletInteract;
     private final GetDefaultWalletBalance getDefaultWalletBalance;
+    private final GetAAVEBalance getAAVEBalance;
     private final FetchTransactionsInteract fetchTransactionsInteract;
 
     private final ManageWalletsRouter manageWalletsRouter;
@@ -56,6 +60,7 @@ public class TransactionsViewModel extends BaseViewModel {
             FindDefaultWalletInteract findDefaultWalletInteract,
             FetchTransactionsInteract fetchTransactionsInteract,
             GetDefaultWalletBalance getDefaultWalletBalance,
+            GetAAVEBalance getAAVEBalance,
             ManageWalletsRouter manageWalletsRouter,
             SettingsRouter settingsRouter,
             AaveRouter aaveRouter,
@@ -67,6 +72,7 @@ public class TransactionsViewModel extends BaseViewModel {
         this.findDefaultNetworkInteract = findDefaultNetworkInteract;
         this.findDefaultWalletInteract = findDefaultWalletInteract;
         this.getDefaultWalletBalance = getDefaultWalletBalance;
+        this.getAAVEBalance = getAAVEBalance;
         this.fetchTransactionsInteract = fetchTransactionsInteract;
         this.manageWalletsRouter = manageWalletsRouter;
         this.settingsRouter = settingsRouter;
@@ -102,6 +108,10 @@ public class TransactionsViewModel extends BaseViewModel {
         return defaultWalletBalance;
     }
 
+    public LiveData<Map<String, String>> aaveBalance() {
+        return aaveBalance;
+    }
+
     public void prepare() {
         progress.postValue(true);
         disposable = findDefaultNetworkInteract
@@ -117,6 +127,12 @@ public class TransactionsViewModel extends BaseViewModel {
                         .fetch(defaultWallet.getValue()/*new Wallet("0x60f7a1cbc59470b74b1df20b133700ec381f15d3")*/)
                         .subscribe(this::onTransactions, this::onError))
             .subscribe();
+    }
+
+    public void getBalanceAAVE(Wallet wallet) {
+        balanceDisposable = Observable.interval(0, GET_BALANCE_INTERVAL, TimeUnit.SECONDS)
+                .doOnNext(l -> getAAVEBalance.getBalance(defaultWallet.getValue()).subscribe(aaveBalance::postValue, t -> {}))
+                .subscribe();
     }
 
     public void getBalance() {
@@ -137,6 +153,7 @@ public class TransactionsViewModel extends BaseViewModel {
     private void onDefaultWallet(Wallet wallet) {
         defaultWallet.setValue(wallet);
         getBalance();
+        getBalanceAAVE(wallet);
         fetchTransactions();
     }
 
