@@ -145,8 +145,12 @@ public class ATokenRepository implements ATokenRepositoryType {
                 blockExplorerClient);
 
         return Single.fromCallable(() -> {
-            TransactionReceipt tr = aTokenWeb3.redeem(new Uint256(MyWalletUtil.finalAmount(amount))).send();
-            return  tr.getTransactionHash();
+            try {
+                TransactionReceipt tr = aTokenWeb3.redeem(new Uint256(MyWalletUtil.finalAmount(amount))).send();
+                return "Success : " + tr.getTransactionHash();
+            }catch (Exception e){
+                return "Error : " + e.getMessage();
+            }
         }).subscribeOn(Schedulers.io());
     }
 

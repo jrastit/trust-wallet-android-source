@@ -119,13 +119,17 @@ public class LendingPoolRepository implements LendingPoolRepositoryType {
                 transactionLocalSource,
                 blockExplorerClient);
         return Single.fromCallable(() -> {
-            TransactionReceipt tr = lendingPoolWeb3.deposit(
-                    new Address("0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"),
-                    new Uint256(MyWalletUtil.finalAmount(amount)),
-                    new Uint16(0),
-                    MyWalletUtil.finalAmount(amount))
-                    .send();
-            return tr.getTransactionHash();
+            try {
+                TransactionReceipt tr = lendingPoolWeb3.deposit(
+                        new Address("0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"),
+                        new Uint256(MyWalletUtil.finalAmount(amount)),
+                        new Uint16(0),
+                        MyWalletUtil.finalAmount(amount))
+                        .send();
+                return "Success : " + tr.getTransactionHash();
+            }catch (Exception e){
+                return "Error : " + e.getMessage();
+            }
         }).subscribeOn(Schedulers.io());
     }
 
