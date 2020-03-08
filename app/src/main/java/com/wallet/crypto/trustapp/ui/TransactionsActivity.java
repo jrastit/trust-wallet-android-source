@@ -15,25 +15,27 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aitivity.enterprise.wallet.entity.WawetCommand;
+import com.aitivity.enterprise.wallet.ui.widget.adapter.WawetCommandAdapter;
+import com.aitivity.enterprise.wallet.widget.EmptyWawetCommandsView;
 import com.wallet.crypto.trustapp.C;
 import com.wallet.crypto.trustapp.R;
 import com.wallet.crypto.trustapp.entity.ErrorEnvelope;
 import com.wallet.crypto.trustapp.entity.NetworkInfo;
 import com.wallet.crypto.trustapp.entity.Transaction;
 import com.wallet.crypto.trustapp.entity.Wallet;
-import com.wallet.crypto.trustapp.ui.widget.adapter.TransactionsAdapter;
 import com.wallet.crypto.trustapp.util.RootUtil;
 import com.wallet.crypto.trustapp.viewmodel.BaseNavigationActivity;
 import com.wallet.crypto.trustapp.viewmodel.TransactionsViewModel;
 import com.wallet.crypto.trustapp.viewmodel.TransactionsViewModelFactory;
 import com.wallet.crypto.trustapp.widget.DepositView;
-import com.wallet.crypto.trustapp.widget.EmptyTransactionsView;
 import com.wallet.crypto.trustapp.widget.SystemView;
 
 import java.util.Map;
@@ -46,16 +48,17 @@ import static com.wallet.crypto.trustapp.C.ETHEREUM_NETWORK_NAME;
 
 public class TransactionsActivity extends BaseNavigationActivity implements View.OnClickListener {
 
+    final static public String TAG = "TransactionActivity";
+
     @Inject
     TransactionsViewModelFactory transactionsViewModelFactory;
     private TransactionsViewModel viewModel;
 
     private SystemView systemView;
-    private TransactionsAdapter adapter;
+    //private TransactionsAdapter adapter;
+    private WawetCommandAdapter wawetCommandAdapter;
     private Dialog dialog;
     private TextView balance;
-    private TextView ensName;
-    private TextView ensNameResult;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,14 +75,16 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
         balance = findViewById(R.id.defiBalance);
         balance.setText("DEFI -- ETH");
 
-        adapter = new TransactionsAdapter(this::onTransactionClick);
+        //adapter = new TransactionsAdapter(this::onTransactionClick);
+        wawetCommandAdapter = new WawetCommandAdapter(this::onWawetCommandClick);
         SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh_layout);
         systemView = findViewById(R.id.system_view);
 
         RecyclerView list = findViewById(R.id.list);
 
         list.setLayoutManager(new LinearLayoutManager(this));
-        list.setAdapter(adapter);
+        //list.setAdapter(adapter);
+        list.setAdapter(wawetCommandAdapter);
 
         systemView.attachRecyclerView(list);
         systemView.attachSwipeRefreshLayout(refreshLayout);
@@ -92,13 +97,10 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
         viewModel.defaultNetwork().observe(this, this::onDefaultNetwork);
         viewModel.defaultWalletBalance().observe(this, this::onBalanceChanged);
         viewModel.defaultWallet().observe(this, this::onDefaultWallet);
-        viewModel.transactions().observe(this, this::onTransactions);
+        //viewModel.transactions().observe(this, this::onTransactions);
+        viewModel.wawetCommand().observe(this, this::onWawetCommand);
         viewModel.aaveBalance().observe(this, this::onAAVEBalanceChanged);
-        viewModel.ensRegister().observe(this, this::onENSRegister);
 
-        findViewById(R.id.ensNameBtn).setOnClickListener(view -> onENSNameBtn());
-        ensName = findViewById(R.id.ensNameEdit);
-        ensNameResult = findViewById(R.id.ensNameResult);
         //refreshLayout.setOnRefreshListener(viewModel::fetchTransactions);
         refreshLayout.setOnRefreshListener(viewModel::getBalance);
         //refreshLayout.setRefreshing(false);
@@ -108,13 +110,18 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
         viewModel.showDetails(view.getContext(), transaction);
     }
 
+    private void onWawetCommandClick(View view, WawetCommand wawetCommand) {
+        viewModel.showWawetCommandDetails(view.getContext(), wawetCommand);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
 
         setTitle(getString(R.string.unknown_balance_without_symbol));
         setSubtitle("");
-        adapter.clear();
+        //adapter.clear();
+        wawetCommandAdapter.clear();
         viewModel.prepare();
         checkRoot();
 
@@ -190,11 +197,6 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
         return false;
     }
 
-    private void onENSNameBtn() {
-        String name = ensName.getText().toString();
-        viewModel.ensRegister(name);
-        ensNameResult.setText("Registering... " + name);
-    }
 
     private void onBalanceChanged(Map<String, String> balance) {
         ActionBar actionBar = getSupportActionBar();
@@ -225,10 +227,18 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
         }
     }
 
-    private void onENSRegister(String result){
-        ensNameResult.setText(result);
-    }
 
+    private void onWawetCommand(WawetCommand[] wawetCommand) {
+        Log.d(TAG, "onWawetCommand: " + wawetCommand.length);
+        if (wawetCommand == null) {
+            EmptyWawetCommandsView emptyView = new EmptyWawetCommandsView(this, this);
+            emptyView.setNetworkInfo(viewModel.defaultNetwork().getValue());
+            systemView.showEmpty(emptyView);
+        }
+        wawetCommandAdapter.addWawetCommands(wawetCommand);
+        invalidateOptionsMenu();
+    }
+    /*
     private void onTransactions(Transaction[] transaction) {
         if (transaction == null || transaction.length == 0) {
             EmptyTransactionsView emptyView = new EmptyTransactionsView(this, this);
@@ -239,12 +249,14 @@ public class TransactionsActivity extends BaseNavigationActivity implements View
         invalidateOptionsMenu();
     }
 
+     */
+
     private void onDefaultWallet(Wallet wallet) {
-        adapter.setDefaultWallet(wallet);
+        //adapter.setDefaultWallet(wallet);
     }
 
     private void onDefaultNetwork(NetworkInfo networkInfo) {
-        adapter.setDefaultNetwork(networkInfo);
+        //adapter.setDefaultNetwork(networkInfo);
         setBottomMenu(R.menu.menu_main_network);
     }
 

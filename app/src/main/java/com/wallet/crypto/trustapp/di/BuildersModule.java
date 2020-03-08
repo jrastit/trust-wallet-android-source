@@ -1,9 +1,9 @@
 package com.wallet.crypto.trustapp.di;
 
 import com.aitivity.enterprise.wallet.di.AaveModule;
-import com.aitivity.enterprise.wallet.di.GetAAVEBalanceModule;
-import com.aitivity.enterprise.wallet.interact.GetAAVEBalance;
-import com.wallet.crypto.trustapp.ui.AaveActivity;
+import com.aitivity.enterprise.wallet.di.WawetCommandDetailModule;
+import com.aitivity.enterprise.wallet.ui.AaveActivity;
+import com.aitivity.enterprise.wallet.ui.widget.WawetCommandDetailActivity;
 import com.wallet.crypto.trustapp.ui.AddTokenActivity;
 import com.wallet.crypto.trustapp.ui.ConfirmationActivity;
 import com.wallet.crypto.trustapp.ui.GasSettingsActivity;
@@ -41,6 +41,10 @@ public abstract class BuildersModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = TransactionDetailModule.class)
     abstract TransactionDetailActivity bindTransactionDetailModule();
+
+	@ActivityScope
+	@ContributesAndroidInjector(modules = WawetCommandDetailModule.class)
+	abstract WawetCommandDetailActivity bindWawetCommandDetailDetailModule();
 
 	@ActivityScope
 	@ContributesAndroidInjector(modules = SettingsModule.class)

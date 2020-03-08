@@ -56,6 +56,7 @@ public abstract class C {
     public interface Key {
         String WALLET = "wallet";
         String TRANSACTION = "transaction";
+        String WAWETCOMMAND = "command";
         String SHOULD_SHOW_SECURITY_WARNING = "should_show_security_warning";
     }
 }

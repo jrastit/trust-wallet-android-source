@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class SortedItem<T> {
-    protected final List<Integer> tags = new ArrayList<>();
+    public final List<Integer> tags = new ArrayList<>();
 
     public final int viewType;
     public final T value;

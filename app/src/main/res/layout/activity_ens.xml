@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainpage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.aitivity.enterprise.wallet.ui.AaveActivity">
+
+    <include layout="@layout/layout_simple_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/ensName"
+            style="@style/AppTheme.Toolbar.Title"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_marginTop="100px"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center_vertical|center"
+            android:paddingLeft="@dimen/big_padding"
+            android:text="Wallet Name" />
+
+        <EditText
+            android:id="@+id/ensNameEdit"
+            style="@style/AppTheme.Toolbar.Title"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:gravity="center_vertical|left"
+            android:hint="Chose a name"
+            android:paddingLeft="@dimen/big_padding"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/ensNameBtn"
+            style="@style/AppTheme.Toolbar.Title"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/colorPrimary"
+            android:gravity="center_vertical|center"
+            android:paddingLeft="@dimen/big_padding"
+            android:text="Ok" />
+
+        <TextView
+            android:id="@+id/ensNameResult"
+            style="@style/AppTheme.Toolbar.Title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20px"
+            android:gravity="center_vertical|center"
+            android:paddingLeft="@dimen/big_padding"
+            android:text=""
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
+</RelativeLayout>

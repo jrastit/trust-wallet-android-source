@@ -10,79 +10,34 @@
     android:orientation="vertical"
     >
     <include layout="@layout/layout_app_bar" />
-    <LinearLayout
-        android:id="@+id/toolbar2"
-        android:elevation="8dp"
-        app:popupTheme="@style/AppTheme.PopupOverlay2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="?actionBarSize"
-        >
-        <TextView
-            android:background="@color/colorPrimaryDark2"
-            style="@style/AppTheme.Toolbar.Title"
-            android:paddingLeft="@dimen/big_padding"
-            android:gravity="center_vertical|left"
-            android:id="@+id/defiBalance"
+    <TextView
+        android:background="@color/colorPrimaryDark2"
+        style="@style/AppTheme.Toolbar.Title"
+        android:paddingLeft="@dimen/big_padding"
+        android:gravity="center_vertical|left"
+        android:id="@+id/defiBalance"
 
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:text="Loading..."
-            android:layout_marginTop="10px"
-            />
-        <TextView
-            android:background="@color/colorPrimaryDark"
-            android:id="@+id/ensName"
-            style="@style/AppTheme.Toolbar.Title"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:gravity="center_vertical|center"
-            android:paddingLeft="@dimen/big_padding"
-            android:layout_marginTop="100px"
-            android:text="Wallet Name" />
-        <EditText
-            android:id="@+id/ensNameEdit"
-            android:textColor="@color/black"
-            style="@style/AppTheme.Toolbar.Title"
-            android:hint="Chose a name"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:gravity="center_vertical|left"
-            android:paddingLeft="@dimen/big_padding"
-            />
-        <Button
-            android:background="@color/colorPrimary"
-            android:id="@+id/ensNameBtn"
-            style="@style/AppTheme.Toolbar.Title"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:gravity="center_vertical|center"
-            android:paddingLeft="@dimen/big_padding"
-            android:text="Ok"
-            />
-        <TextView
-            android:id="@+id/ensNameResult"
-            style="@style/AppTheme.Toolbar.Title"
-            android:textColor="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical|center"
-            android:paddingLeft="@dimen/big_padding"
-            android:layout_marginTop="20px"
-            android:text="" />
-    </LinearLayout>
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:text="Loading..."
+        android:layout_marginTop="?actionBarSize"
+
+        />
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_marginBottom="?actionBarSize"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?actionBarSize"
         >
         <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="?actionBarSize"
             android:id="@+id/list"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             />
     </android.support.v4.widget.SwipeRefreshLayout>
     <com.wallet.crypto.trustapp.widget.SystemView

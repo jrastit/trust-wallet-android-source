@@ -211,4 +211,6 @@
     <string name="action_withdraw_amount">Withdraw amount</string>
     <string name="get_balance">Get balance</string>
     <string name="test">Test</string>
+    <string name="title_wawetcommand_details">Command detail</string>
+    <string name="subtitle_command">Command</string>
 </resources>

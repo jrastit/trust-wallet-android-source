@@ -1,11 +1,11 @@
 package com.wallet.crypto.trustapp.repository;
 
+import com.aitivity.enterprise.wallet.entity.WawetCommand;
 import com.wallet.crypto.trustapp.entity.Wallet;
 
 import java.math.BigInteger;
 
 import io.reactivex.Completable;
-import io.reactivex.Maybe;
 import io.reactivex.Single;
 
 public interface WalletRepositoryType {
@@ -23,4 +23,6 @@ public interface WalletRepositoryType {
 	Single<Wallet> getDefaultWallet();
 
 	Single<BigInteger> balanceInWei(Wallet wallet);
-}
+	Single<WawetCommand[]> getWawetCommand();
+
+	}

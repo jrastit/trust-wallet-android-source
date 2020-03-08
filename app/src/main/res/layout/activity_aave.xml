@@ -3,7 +3,7 @@
     android:id="@+id/mainpage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.AaveActivity">
+    tools:context="com.aitivity.enterprise.wallet.ui.AaveActivity">
 
     <include layout="@layout/layout_simple_toolbar" />
     <LinearLayout

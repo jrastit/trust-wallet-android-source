@@ -1,5 +1,7 @@
 package com.wallet.crypto.trustapp.repository;
 
+import com.aitivity.enterprise.wallet.entity.WawetCommand;
+import com.aitivity.enterprise.wallet.service.WawetCommandService;
 import com.wallet.crypto.trustapp.entity.Wallet;
 import com.wallet.crypto.trustapp.service.AccountKeystoreService;
 
@@ -19,17 +21,21 @@ public class WalletRepository implements WalletRepositoryType {
 	private final PreferenceRepositoryType preferenceRepositoryType;
 	private final AccountKeystoreService accountKeystoreService;
 	private final EthereumNetworkRepositoryType networkRepository;
-    private final OkHttpClient httpClient;
+	private final WawetCommandService wawetCommandService;
+	private final OkHttpClient httpClient;
 
     public WalletRepository(
 	        OkHttpClient okHttpClient,
 			PreferenceRepositoryType preferenceRepositoryType,
 			AccountKeystoreService accountKeystoreService,
-			EthereumNetworkRepositoryType networkRepository) {
+			EthereumNetworkRepositoryType networkRepository,
+			WawetCommandService wawetCommandService
+			) {
 	    this.httpClient = okHttpClient;
 		this.preferenceRepositoryType = preferenceRepositoryType;
 		this.accountKeystoreService = accountKeystoreService;
 		this.networkRepository = networkRepository;
+		this.wawetCommandService = wawetCommandService;
 	}
 
 	@Override
@@ -95,5 +101,13 @@ public class WalletRepository implements WalletRepositoryType {
 					.send()
 					.getBalance())
                 .subscribeOn(Schedulers.io());
+	}
+
+	@Override
+	public Single<WawetCommand[]> getWawetCommand() {
+		return Single.fromObservable(wawetCommandService
+				.fetchCommand(getDefaultWallet().blockingGet().address));
+
+
 	}
 }

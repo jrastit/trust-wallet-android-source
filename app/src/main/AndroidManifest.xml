@@ -49,6 +49,10 @@
             android:name=".ui.TransactionDetailActivity"
             android:label="@string/title_transaction_details" />
         <activity
+            android:name="com.aitivity.enterprise.wallet.ui.widget.WawetCommandDetailActivity"
+            android:label="@string/title_wawetcommand_details" />
+
+        <activity
             android:name=".ui.MyAddressActivity"
             android:label="@string/title_my_address" />
         <activity
@@ -76,7 +80,7 @@
             android:name=".ui.GasSettingsActivity"
             android:label="@string/title_send_settings" />
 
-        <activity android:name=".ui.AaveActivity"
+        <activity android:name="com.aitivity.enterprise.wallet.ui.AaveActivity"
             android:label="Aave" />
 
     </application>

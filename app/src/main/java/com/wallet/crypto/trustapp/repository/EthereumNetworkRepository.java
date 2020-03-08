@@ -2,6 +2,8 @@ package com.wallet.crypto.trustapp.repository;
 
 import android.text.TextUtils;
 
+import com.aitivity.enterprise.wallet.entity.WawetCommand;
+import com.aitivity.enterprise.wallet.service.WawetCommandService;
 import com.wallet.crypto.trustapp.entity.NetworkInfo;
 import com.wallet.crypto.trustapp.entity.Ticker;
 import com.wallet.crypto.trustapp.service.TickerService;
@@ -59,6 +61,7 @@ public class EthereumNetworkRepository implements EthereumNetworkRepositoryType 
     public EthereumNetworkRepository(PreferenceRepositoryType preferenceRepository, TickerService tickerService) {
 		this.preferences = preferenceRepository;
 		this.tickerService = tickerService;
+
 		defaultNetwork = getByName(preferences.getDefaultNetwork());
 		if (defaultNetwork == null) {
 			defaultNetwork = NETWORKS[0];
@@ -106,4 +109,6 @@ public class EthereumNetworkRepository implements EthereumNetworkRepositoryType 
         return Single.fromObservable(tickerService
                 .fetchTickerPrice(getDefaultNetwork().symbol));
     }
+
+
 }

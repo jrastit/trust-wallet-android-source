@@ -8,6 +8,8 @@ import com.aitivity.enterprise.wallet.repository.ENSTestRepository;
 import com.aitivity.enterprise.wallet.repository.ENSTestRepositoryType;
 import com.aitivity.enterprise.wallet.repository.LendingPoolRepository;
 import com.aitivity.enterprise.wallet.repository.LendingPoolRepositoryType;
+import com.aitivity.enterprise.wallet.service.WawetAPIService;
+import com.aitivity.enterprise.wallet.service.WawetCommandService;
 import com.google.gson.Gson;
 import com.wallet.crypto.trustapp.repository.EthereumNetworkRepository;
 import com.wallet.crypto.trustapp.repository.EthereumNetworkRepositoryType;
@@ -63,6 +65,12 @@ public class RepositoriesModule {
 
 	@Singleton
 	@Provides
+	WawetCommandService provideWawetCommandService(OkHttpClient httpClient, Gson gson) {
+		return new WawetAPIService(httpClient, gson);
+	}
+
+	@Singleton
+	@Provides
 	EthereumNetworkRepositoryType provideEthereumNetworkRepository(
             PreferenceRepositoryType preferenceRepository,
             TickerService tickerService) {
@@ -75,9 +83,14 @@ public class RepositoriesModule {
             OkHttpClient okHttpClient,
 			PreferenceRepositoryType preferenceRepositoryType,
 			AccountKeystoreService accountKeystoreService,
-			EthereumNetworkRepositoryType networkRepository) {
+			EthereumNetworkRepositoryType networkRepository,
+			WawetCommandService wawetCommandService) {
 		return new WalletRepository(
-		        okHttpClient, preferenceRepositoryType, accountKeystoreService, networkRepository);
+		        okHttpClient,
+				preferenceRepositoryType,
+				accountKeystoreService,
+				networkRepository,
+				wawetCommandService);
 	}
 
 	@Singleton

@@ -1,4 +1,4 @@
-package com.wallet.crypto.trustapp.ui;
+package com.aitivity.enterprise.wallet.ui;
 
 import android.app.Fragment;
 import android.arch.lifecycle.ViewModelProviders;
@@ -16,6 +16,7 @@ import com.wallet.crypto.trustapp.entity.Wallet;
 import com.wallet.crypto.trustapp.router.TransactionsRouter;
 import com.aitivity.enterprise.wallet.viewmodel.AaveViewModel;
 import com.aitivity.enterprise.wallet.viewmodel.AaveViewModelFactory;
+import com.wallet.crypto.trustapp.ui.BaseActivity;
 import com.wallet.crypto.trustapp.viewmodel.TransactionsViewModel;
 import java.util.Map;
 
@@ -100,7 +101,6 @@ public class AaveActivity extends BaseActivity implements HasFragmentInjector {
         depositAmount.setText("Pending...");
         findViewById(R.id.depositBtn).setVisibility(View.INVISIBLE);
     }
-
     private void onRedeem() {
         viewModel.redeem(new Double(redeemAmount.getText().toString()));
         redeemAmount.setText("Pending...");

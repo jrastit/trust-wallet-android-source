@@ -5,10 +5,12 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.net.Uri;
 
-import com.aitivity.enterprise.wallet.interact.AaveInfoInteract;
+import com.aitivity.enterprise.wallet.entity.WawetCommand;
 import com.aitivity.enterprise.wallet.interact.ENSTestInteract;
+import com.aitivity.enterprise.wallet.interact.FetchWawetCommandInteract;
 import com.aitivity.enterprise.wallet.interact.GetAAVEBalance;
 import com.aitivity.enterprise.wallet.router.ENSTestRouter;
+import com.aitivity.enterprise.wallet.router.WawetCommandDetailRouter;
 import com.wallet.crypto.trustapp.entity.NetworkInfo;
 import com.wallet.crypto.trustapp.entity.Transaction;
 import com.wallet.crypto.trustapp.entity.Wallet;
@@ -37,6 +39,7 @@ public class TransactionsViewModel extends BaseViewModel {
     private final MutableLiveData<NetworkInfo> defaultNetwork = new MutableLiveData<>();
     private final MutableLiveData<Wallet> defaultWallet = new MutableLiveData<>();
     private final MutableLiveData<Transaction[]> transactions = new MutableLiveData<>();
+    private final MutableLiveData<WawetCommand[]> wawetCommand = new MutableLiveData<>();
     private final MutableLiveData<String> ensRegister = new MutableLiveData<>();
     private final MutableLiveData<Map<String, String>> defaultWalletBalance = new MutableLiveData<>();
     private final MutableLiveData<Map<String, String>> aaveBalance = new MutableLiveData<>();
@@ -47,6 +50,7 @@ public class TransactionsViewModel extends BaseViewModel {
     private final GetDefaultWalletBalance getDefaultWalletBalance;
     private final GetAAVEBalance getAAVEBalance;
     private final FetchTransactionsInteract fetchTransactionsInteract;
+    private final FetchWawetCommandInteract fetchWawetCommandInteract;
 
     private final ManageWalletsRouter manageWalletsRouter;
     private final SettingsRouter settingsRouter;
@@ -54,17 +58,20 @@ public class TransactionsViewModel extends BaseViewModel {
     private final ENSTestRouter eNSTestRouter;
     private final SendRouter sendRouter;
     private final TransactionDetailRouter transactionDetailRouter;
+    private final WawetCommandDetailRouter wawetCommandDetailRouter;
     private final MyAddressRouter myAddressRouter;
     private final MyTokensRouter myTokensRouter;
     private final ExternalBrowserRouter externalBrowserRouter;
     private Disposable balanceDisposable;
     private Disposable transactionDisposable;
+    private Disposable wawetCommandDisposable;
     private final ENSTestInteract ensTestInteract;
 
     TransactionsViewModel(
             FindDefaultNetworkInteract findDefaultNetworkInteract,
             FindDefaultWalletInteract findDefaultWalletInteract,
             FetchTransactionsInteract fetchTransactionsInteract,
+            FetchWawetCommandInteract fetchWawetCommandInteract,
             GetDefaultWalletBalance getDefaultWalletBalance,
             GetAAVEBalance getAAVEBalance,
             ENSTestInteract ensTestInteract,
@@ -74,6 +81,7 @@ public class TransactionsViewModel extends BaseViewModel {
             ENSTestRouter eNSTestRouter,
             SendRouter sendRouter,
             TransactionDetailRouter transactionDetailRouter,
+            WawetCommandDetailRouter wawetCommandDetailRouter,
             MyAddressRouter myAddressRouter,
             MyTokensRouter myTokensRouter,
             ExternalBrowserRouter externalBrowserRouter) {
@@ -83,12 +91,14 @@ public class TransactionsViewModel extends BaseViewModel {
         this.getAAVEBalance = getAAVEBalance;
         this.ensTestInteract = ensTestInteract;
         this.fetchTransactionsInteract = fetchTransactionsInteract;
+        this.fetchWawetCommandInteract = fetchWawetCommandInteract;
         this.manageWalletsRouter = manageWalletsRouter;
         this.settingsRouter = settingsRouter;
         this.aaveRouter = aaveRouter;
         this.eNSTestRouter = eNSTestRouter;
         this.sendRouter = sendRouter;
         this.transactionDetailRouter = transactionDetailRouter;
+        this.wawetCommandDetailRouter = wawetCommandDetailRouter;
         this.myAddressRouter = myAddressRouter;
         this.myTokensRouter = myTokensRouter;
         this.externalBrowserRouter = externalBrowserRouter;
@@ -113,6 +123,10 @@ public class TransactionsViewModel extends BaseViewModel {
 
     public LiveData<Transaction[]> transactions() {
         return transactions;
+    }
+
+    public LiveData<WawetCommand[]> wawetCommand() {
+        return wawetCommand;
     }
 
     public LiveData<Map<String, String>> defaultWalletBalance() {
@@ -140,6 +154,25 @@ public class TransactionsViewModel extends BaseViewModel {
                         .fetch(defaultWallet.getValue()/*new Wallet("0x60f7a1cbc59470b74b1df20b133700ec381f15d3")*/)
                         .subscribe(this::onTransactions, this::onError))
             .subscribe();
+    }
+
+    public void fetchWawetCommand() {
+        progress.postValue(true);
+        wawetCommandDisposable = Observable.interval(0, FETCH_TRANSACTIONS_INTERVAL, TimeUnit.SECONDS)
+                .doOnNext(l ->
+                        disposable = fetchWawetCommandInteract
+                                .fetch().subscribe(this::onWawetCommand, this::onError)
+                                )
+                .subscribe();
+        /*
+        wawetCommandDisposable = Observable.interval(0, FETCH_TRANSACTIONS_INTERVAL, TimeUnit.SECONDS)
+                .doOnNext(l ->
+                        disposable = fetchWawetCommandInteract
+                                .fetch()
+                                .subscribe(this::onWawetCommand, this::onError))
+                .subscribe();
+
+         */
     }
 
     public void getBalanceAAVE(Wallet wallet) {
@@ -172,9 +205,9 @@ public class TransactionsViewModel extends BaseViewModel {
 
     private void onDefaultWallet(Wallet wallet) {
         defaultWallet.setValue(wallet);
-        getBalance();
-        getBalanceAAVE(wallet);
-
+        //getBalance();
+        //getBalanceAAVE(wallet);
+        fetchWawetCommand();
 
         //Don't work
         //fetchTransactions();
@@ -189,6 +222,11 @@ public class TransactionsViewModel extends BaseViewModel {
     private void onTransactions(Transaction[] transactions) {
         progress.postValue(false);
         this.transactions.postValue(transactions);
+    }
+
+    private void onWawetCommand(WawetCommand[] wawetCommand) {
+        progress.postValue(false);
+        this.wawetCommand.postValue(wawetCommand);
     }
 
     public void showWallets(Context context) {
@@ -207,6 +245,10 @@ public class TransactionsViewModel extends BaseViewModel {
 
     public void showDetails(Context context, Transaction transaction) {
         transactionDetailRouter.open(context, transaction);
+    }
+
+    public void showWawetCommandDetails(Context context, WawetCommand wawetCommand) {
+        wawetCommandDetailRouter.open(context, wawetCommand);
     }
 
     public void showMyAddress(Context context) {

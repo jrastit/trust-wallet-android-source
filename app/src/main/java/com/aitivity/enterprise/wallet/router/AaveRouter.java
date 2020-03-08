@@ -3,7 +3,7 @@ package com.aitivity.enterprise.wallet.router;
 import android.content.Context;
 import android.content.Intent;
 
-import com.wallet.crypto.trustapp.ui.AaveActivity;
+import com.aitivity.enterprise.wallet.ui.AaveActivity;
 
 public class AaveRouter {
 

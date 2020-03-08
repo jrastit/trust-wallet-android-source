@@ -5,8 +5,10 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
 import com.aitivity.enterprise.wallet.interact.ENSTestInteract;
+import com.aitivity.enterprise.wallet.interact.FetchWawetCommandInteract;
 import com.aitivity.enterprise.wallet.interact.GetAAVEBalance;
 import com.aitivity.enterprise.wallet.router.ENSTestRouter;
+import com.aitivity.enterprise.wallet.router.WawetCommandDetailRouter;
 import com.aitivity.enterprise.wallet.smartContract.ENSTest;
 import com.wallet.crypto.trustapp.interact.FetchTransactionsInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultNetworkInteract;
@@ -29,12 +31,14 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
     private final GetAAVEBalance getAAVEBalance;
     private final ENSTestInteract ensTestInteract;
     private final FetchTransactionsInteract fetchTransactionsInteract;
+    private final FetchWawetCommandInteract fetchWawetCommandInteract;
     private final ManageWalletsRouter manageWalletsRouter;
     private final SettingsRouter settingsRouter;
     private final AaveRouter aaveRouter;
     private final ENSTestRouter eNSTestRouter;
     private final SendRouter sendRouter;
     private final TransactionDetailRouter transactionDetailRouter;
+    private final WawetCommandDetailRouter wawetCommandDetailRouter;
     private final MyAddressRouter myAddressRouter;
     private final MyTokensRouter myTokensRouter;
     private final ExternalBrowserRouter externalBrowserRouter;
@@ -43,6 +47,7 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
             FindDefaultNetworkInteract findDefaultNetworkInteract,
             FindDefaultWalletInteract findDefaultWalletInteract,
             FetchTransactionsInteract fetchTransactionsInteract,
+            FetchWawetCommandInteract fetchWawetCommandInteract,
             GetDefaultWalletBalance getDefaultWalletBalance,
             GetAAVEBalance getAAVEBalance,
             ENSTestInteract ensTestInteract,
@@ -52,6 +57,7 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
             ENSTestRouter eNSTestRouter,
             SendRouter sendRouter,
             TransactionDetailRouter transactionDetailRouter,
+            WawetCommandDetailRouter wawetCommandDetailRouter,
             MyAddressRouter myAddressRouter,
             MyTokensRouter myTokensRouter,
             ExternalBrowserRouter externalBrowserRouter) {
@@ -61,12 +67,14 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
         this.getAAVEBalance = getAAVEBalance;
         this.ensTestInteract = ensTestInteract;
         this.fetchTransactionsInteract = fetchTransactionsInteract;
+        this.fetchWawetCommandInteract = fetchWawetCommandInteract;
         this.manageWalletsRouter = manageWalletsRouter;
         this.settingsRouter = settingsRouter;
         this.aaveRouter = aaveRouter;
         this.eNSTestRouter = eNSTestRouter;
         this.sendRouter = sendRouter;
         this.transactionDetailRouter = transactionDetailRouter;
+        this.wawetCommandDetailRouter = wawetCommandDetailRouter;
         this.myAddressRouter = myAddressRouter;
         this.myTokensRouter = myTokensRouter;
         this.externalBrowserRouter = externalBrowserRouter;
@@ -79,6 +87,7 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
                 findDefaultNetworkInteract,
                 findDefaultWalletInteract,
                 fetchTransactionsInteract,
+                fetchWawetCommandInteract,
                 getDefaultWalletBalance,
                 getAAVEBalance,
                 ensTestInteract,
@@ -88,6 +97,7 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
                 eNSTestRouter,
                 sendRouter,
                 transactionDetailRouter,
+                wawetCommandDetailRouter,
                 myAddressRouter,
                 myTokensRouter,
                 externalBrowserRouter);

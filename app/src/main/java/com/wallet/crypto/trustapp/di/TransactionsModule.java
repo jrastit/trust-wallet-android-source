@@ -1,12 +1,15 @@
 package com.wallet.crypto.trustapp.di;
 
 import com.aitivity.enterprise.wallet.interact.ENSTestInteract;
+import com.aitivity.enterprise.wallet.interact.FetchWawetCommandInteract;
 import com.aitivity.enterprise.wallet.interact.GetAAVEBalance;
 import com.aitivity.enterprise.wallet.repository.ENSTestRepository;
 import com.aitivity.enterprise.wallet.repository.ENSTestRepositoryType;
 import com.aitivity.enterprise.wallet.router.ENSTestRouter;
+import com.aitivity.enterprise.wallet.router.WawetCommandDetailRouter;
 import com.wallet.crypto.trustapp.entity.Wallet;
 import com.wallet.crypto.trustapp.interact.FetchTransactionsInteract;
+import com.wallet.crypto.trustapp.interact.FetchWalletsInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultNetworkInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultWalletInteract;
 import com.wallet.crypto.trustapp.interact.GetDefaultWalletBalance;
@@ -34,6 +37,7 @@ class TransactionsModule {
             FindDefaultNetworkInteract findDefaultNetworkInteract,
             FindDefaultWalletInteract findDefaultWalletInteract,
             FetchTransactionsInteract fetchTransactionsInteract,
+            FetchWawetCommandInteract fetchWawetCommandInteract,
             GetDefaultWalletBalance getDefaultWalletBalance,
             GetAAVEBalance getAAVEBalance,
             ENSTestInteract ensTestInteract,
@@ -43,6 +47,7 @@ class TransactionsModule {
             ENSTestRouter eNSTestRouter,
             SendRouter sendRouter,
             TransactionDetailRouter transactionDetailRouter,
+            WawetCommandDetailRouter wawetCommandDetailRouter,
             MyAddressRouter myAddressRouter,
             MyTokensRouter myTokensRouter,
             ExternalBrowserRouter externalBrowserRouter) {
@@ -50,6 +55,7 @@ class TransactionsModule {
                 findDefaultNetworkInteract,
                 findDefaultWalletInteract,
                 fetchTransactionsInteract,
+                fetchWawetCommandInteract,
                 getDefaultWalletBalance,
                 getAAVEBalance,
                 ensTestInteract,
@@ -59,6 +65,7 @@ class TransactionsModule {
                 eNSTestRouter,
                 sendRouter,
                 transactionDetailRouter,
+                wawetCommandDetailRouter,
                 myAddressRouter,
                 myTokensRouter,
                 externalBrowserRouter);
@@ -78,6 +85,11 @@ class TransactionsModule {
     @Provides
     FetchTransactionsInteract provideFetchTransactionsInteract(TransactionRepositoryType transactionRepository) {
         return new FetchTransactionsInteract(transactionRepository);
+    }
+
+    @Provides
+    FetchWawetCommandInteract provideFetchWalletCommandInteract(WalletRepositoryType walletRepository) {
+        return new FetchWawetCommandInteract(walletRepository);
     }
 
     @Provides
@@ -118,6 +130,11 @@ class TransactionsModule {
     @Provides
     TransactionDetailRouter provideTransactionDetailRouter() {
         return new TransactionDetailRouter();
+    }
+
+    @Provides
+    WawetCommandDetailRouter provideWawetCommandDetailRouter() {
+        return new WawetCommandDetailRouter();
     }
 
     @Provides
