@@ -209,8 +209,8 @@ public class TransactionsViewModel extends BaseViewModel {
 
     private void onDefaultWallet(Wallet wallet) {
         defaultWallet.setValue(wallet);
-        //getBalance();
-        //getBalanceAAVE(wallet);
+        getBalance();
+        getBalanceAAVE(wallet);
         fetchWawetCommand();
 
         //Don't work
