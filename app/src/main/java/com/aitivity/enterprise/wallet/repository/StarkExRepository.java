@@ -137,4 +137,37 @@ public class StarkExRepository implements StarkExRepositoryType {
         }).observeOn(AndroidSchedulers.mainThread());
     }
 
+
+    @Override
+    public Single<String> deposit(Wallet from, String tokenId, String vaultId, String amount, String password) {
+        Log.i(TAG, "deposit: 1");
+        TransactionManager transactionManager = new MyTransactionManager(web3j, accountKeystoreService, from, password, MyWalletUtil.getChainId(networkRepository));
+        Log.i(TAG, "deposit: 2");
+        StarkExWeb3 starkExWeb3 = new StarkExWeb3(
+                web3j,
+                getContractAddress(),
+                transactionManager,
+                contractGasProvider,
+                networkRepository,
+                accountKeystoreService,
+                transactionLocalSource,
+                blockExplorerClient);
+        Log.i(TAG, "deposit: 3");
+        return Single.fromCallable(() -> {
+            try {
+                //MyWalletUtil.finalAmount()
+                //byte[] biteArray = Numeric.hexStringToByteArray(starkKey);
+                //Uint256 starkKey256 = new Uint256(biteArray);
+                Uint256 tokenId256 = new Uint256(new BigInteger(tokenId.substring(2), 16));
+                Uint256 vaultId256 = new Uint256(new BigInteger(vaultId));
+                BigInteger amountBigInt = new BigInteger(amount);
+                Log.i(TAG, "deposit: " + amountBigInt);
+                TransactionReceipt tr = starkExWeb3.deposit(tokenId256, vaultId256, amountBigInt).send();
+                return "Success : " + tr.getTransactionHash();
+            } catch (Exception e) {
+                Log.e(TAG, "deposit: ", e);
+                return "Error : " + e.getMessage();
+            }
+        }).observeOn(AndroidSchedulers.mainThread());
+    }
 }

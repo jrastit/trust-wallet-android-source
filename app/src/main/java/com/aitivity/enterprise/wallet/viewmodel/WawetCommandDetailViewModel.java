@@ -15,6 +15,7 @@ public class WawetCommandDetailViewModel extends BaseViewModel {
     private final MutableLiveData<NetworkInfo> defaultNetwork = new MutableLiveData<>();
     private final MutableLiveData<Wallet> defaultWallet = new MutableLiveData<>();
     private final MutableLiveData<String> register = new MutableLiveData<>();
+    private final MutableLiveData<String> deposit = new MutableLiveData<>();
 
     private final StarkExInteract starkExInteract;
     private final FindDefaultNetworkInteract findDefaultNetworkInteract;
@@ -37,12 +38,23 @@ public class WawetCommandDetailViewModel extends BaseViewModel {
                 .subscribe(this::onRegister, this::onError);
     }
 
+    public void deposit(String tokenId, String vaultId, String amount) {
+        progress.postValue(true);
+        disposable = starkExInteract
+                .deposit(defaultWallet.getValue(), tokenId, vaultId, amount)
+                .subscribe(this::onDeposit, this::onError);
+    }
+
     public LiveData<NetworkInfo> defaultNetwork() {
         return defaultNetwork;
     }
 
     public LiveData<String> register() {
         return register;
+    }
+
+    public LiveData<String> deposit() {
+        return deposit;
     }
 
     public LiveData<Wallet> defaultWallet() {
@@ -52,6 +64,11 @@ public class WawetCommandDetailViewModel extends BaseViewModel {
     private void onRegister(String register) {
         progress.postValue(false);
         this.register.postValue(register);
+    }
+
+    private void onDeposit(String deposit) {
+        progress.postValue(false);
+        this.deposit.postValue(deposit);
     }
 
     public void prepare() {

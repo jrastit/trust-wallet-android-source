@@ -78,6 +78,7 @@ public class WawetCommandDetailActivity extends BaseActivity implements View.OnC
         viewModel.defaultNetwork().observe(this, this::onDefaultNetwork);
         viewModel.defaultWallet().observe(this, this::onDefaultWallet);
         viewModel.register().observe(this, this::onRegister);
+        viewModel.deposit().observe(this, this::onDeposit);
 
         Wallet wallet = viewModel.defaultWallet().getValue();
         if (wallet != null)
@@ -181,6 +182,10 @@ public class WawetCommandDetailActivity extends BaseActivity implements View.OnC
         resultText.setText(message);
     }
 
+    public void onDeposit(String message){
+        resultText.setText(message);
+    }
+
     @Override
     public void onClick(View v) {
         resultText.setText("Processing...");
@@ -192,6 +197,14 @@ public class WawetCommandDetailActivity extends BaseActivity implements View.OnC
                 String starkKey = json.getString("starkKey");
                 String starkSignature = json.getString("deFiSignature");
                 viewModel.register(starkKey, starkSignature);
+                return;
+            }
+            if (action.equals("deposit")){
+                String tokenId = json.getString("starkTokenId");
+                String vaultId = json.getString("vaultId");
+                String amount = json.getString("value");
+                viewModel.deposit(tokenId, vaultId, amount);
+                return;
             }
             //viewModel.showMoreDetails(v.getContext(), wawetCommand);
         }catch (JSONException e){

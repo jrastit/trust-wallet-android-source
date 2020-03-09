@@ -38,6 +38,16 @@ public class StarkExInteract {
                                 .observeOn(AndroidSchedulers.mainThread()));
     }
 
+    public Single<String> deposit(Wallet from, String tokenId, String vaultId, String amount){
+        Log.d(TAG, "deposit: " + starkExRepository);
+
+        return passwordStore.getPassword(from)
+                .subscribeOn(Schedulers.io())
+                .flatMap(password ->
+                        starkExRepository
+                                .deposit(from, tokenId, vaultId, amount, password)
+                                .observeOn(AndroidSchedulers.mainThread()));
+    }
 
 }
 
