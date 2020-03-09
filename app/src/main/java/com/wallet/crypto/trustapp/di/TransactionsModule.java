@@ -3,13 +3,12 @@ package com.wallet.crypto.trustapp.di;
 import com.aitivity.enterprise.wallet.interact.ENSTestInteract;
 import com.aitivity.enterprise.wallet.interact.FetchWawetCommandInteract;
 import com.aitivity.enterprise.wallet.interact.GetAAVEBalance;
-import com.aitivity.enterprise.wallet.repository.ENSTestRepository;
+import com.aitivity.enterprise.wallet.interact.StarkExInteract;
 import com.aitivity.enterprise.wallet.repository.ENSTestRepositoryType;
+import com.aitivity.enterprise.wallet.repository.StarkExRepositoryType;
 import com.aitivity.enterprise.wallet.router.ENSTestRouter;
 import com.aitivity.enterprise.wallet.router.WawetCommandDetailRouter;
-import com.wallet.crypto.trustapp.entity.Wallet;
 import com.wallet.crypto.trustapp.interact.FetchTransactionsInteract;
-import com.wallet.crypto.trustapp.interact.FetchWalletsInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultNetworkInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultWalletInteract;
 import com.wallet.crypto.trustapp.interact.GetDefaultWalletBalance;
@@ -41,6 +40,7 @@ class TransactionsModule {
             GetDefaultWalletBalance getDefaultWalletBalance,
             GetAAVEBalance getAAVEBalance,
             ENSTestInteract ensTestInteract,
+            StarkExInteract starkExInteract,
             ManageWalletsRouter manageWalletsRouter,
             SettingsRouter settingsRouter,
             AaveRouter aaveRouter,
@@ -59,6 +59,7 @@ class TransactionsModule {
                 getDefaultWalletBalance,
                 getAAVEBalance,
                 ensTestInteract,
+                starkExInteract,
                 manageWalletsRouter,
                 settingsRouter,
                 aaveRouter,
@@ -102,6 +103,12 @@ class TransactionsModule {
     ENSTestInteract provideENSTestInteract(ENSTestRepositoryType eNSTestRepository,
                                            PasswordStore passwordStore){
         return new ENSTestInteract(eNSTestRepository, passwordStore);
+    }
+
+    @Provides
+    StarkExInteract provideStarkExInteract(StarkExRepositoryType starkExRepository,
+                                            PasswordStore passwordStore){
+        return new StarkExInteract(starkExRepository, passwordStore);
     }
 
     @Provides

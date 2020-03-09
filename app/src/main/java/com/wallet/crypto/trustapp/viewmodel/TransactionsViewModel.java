@@ -9,6 +9,7 @@ import com.aitivity.enterprise.wallet.entity.WawetCommand;
 import com.aitivity.enterprise.wallet.interact.ENSTestInteract;
 import com.aitivity.enterprise.wallet.interact.FetchWawetCommandInteract;
 import com.aitivity.enterprise.wallet.interact.GetAAVEBalance;
+import com.aitivity.enterprise.wallet.interact.StarkExInteract;
 import com.aitivity.enterprise.wallet.router.ENSTestRouter;
 import com.aitivity.enterprise.wallet.router.WawetCommandDetailRouter;
 import com.wallet.crypto.trustapp.entity.NetworkInfo;
@@ -66,6 +67,7 @@ public class TransactionsViewModel extends BaseViewModel {
     private Disposable transactionDisposable;
     private Disposable wawetCommandDisposable;
     private final ENSTestInteract ensTestInteract;
+    private final StarkExInteract starkExInteract;
 
     TransactionsViewModel(
             FindDefaultNetworkInteract findDefaultNetworkInteract,
@@ -75,6 +77,7 @@ public class TransactionsViewModel extends BaseViewModel {
             GetDefaultWalletBalance getDefaultWalletBalance,
             GetAAVEBalance getAAVEBalance,
             ENSTestInteract ensTestInteract,
+            StarkExInteract starkExInteract,
             ManageWalletsRouter manageWalletsRouter,
             SettingsRouter settingsRouter,
             AaveRouter aaveRouter,
@@ -90,6 +93,7 @@ public class TransactionsViewModel extends BaseViewModel {
         this.getDefaultWalletBalance = getDefaultWalletBalance;
         this.getAAVEBalance = getAAVEBalance;
         this.ensTestInteract = ensTestInteract;
+        this.starkExInteract = starkExInteract;
         this.fetchTransactionsInteract = fetchTransactionsInteract;
         this.fetchWawetCommandInteract = fetchWawetCommandInteract;
         this.manageWalletsRouter = manageWalletsRouter;

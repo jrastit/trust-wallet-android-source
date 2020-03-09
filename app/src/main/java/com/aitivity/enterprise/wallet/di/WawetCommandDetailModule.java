@@ -1,7 +1,9 @@
 package com.aitivity.enterprise.wallet.di;
 
+import com.aitivity.enterprise.wallet.interact.StarkExInteract;
 import com.aitivity.enterprise.wallet.viewmodel.WawetCommandDetailViewModelFactory;
-import com.wallet.crypto.trustapp.router.ExternalBrowserRouter;
+import com.wallet.crypto.trustapp.interact.FindDefaultNetworkInteract;
+import com.wallet.crypto.trustapp.interact.FindDefaultWalletInteract;
 
 import dagger.Module;
 import dagger.Provides;
@@ -11,9 +13,14 @@ public class WawetCommandDetailModule {
 
     @Provides
     WawetCommandDetailViewModelFactory provideWawetCommandDetailViewModelFactory(
-            ExternalBrowserRouter externalBrowserRouter) {
+            FindDefaultNetworkInteract findDefaultNetworkInteract,
+            FindDefaultWalletInteract findDefaultWalletInteract,
+            StarkExInteract starkExInteract
+            ) {
         return new WawetCommandDetailViewModelFactory(
-                externalBrowserRouter);
+                findDefaultNetworkInteract,
+                findDefaultWalletInteract,
+                starkExInteract);
     }
 
 }

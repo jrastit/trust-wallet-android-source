@@ -8,9 +8,12 @@ import com.aitivity.enterprise.wallet.repository.ENSTestRepository;
 import com.aitivity.enterprise.wallet.repository.ENSTestRepositoryType;
 import com.aitivity.enterprise.wallet.repository.LendingPoolRepository;
 import com.aitivity.enterprise.wallet.repository.LendingPoolRepositoryType;
+import com.aitivity.enterprise.wallet.repository.StarkExRepositoryType;
+import com.aitivity.enterprise.wallet.repository.StarkExRepository;
 import com.aitivity.enterprise.wallet.service.WawetAPIService;
 import com.aitivity.enterprise.wallet.service.WawetCommandService;
 import com.google.gson.Gson;
+import com.wallet.crypto.trustapp.entity.Wallet;
 import com.wallet.crypto.trustapp.repository.EthereumNetworkRepository;
 import com.wallet.crypto.trustapp.repository.EthereumNetworkRepositoryType;
 import com.wallet.crypto.trustapp.repository.PreferenceRepositoryType;
@@ -40,6 +43,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.Single;
 import okhttp3.OkHttpClient;
 
 @Module
@@ -118,6 +122,22 @@ public class RepositoriesModule {
 			BlockExplorerClientType blockExplorerClient) {
 		TransactionLocalSource inMemoryCache = new TransactionInMemorySource();
 		return new ATokenRepository(
+				okHttpClient,
+				networkRepository,
+				accountKeystoreService,
+				inMemoryCache,
+				blockExplorerClient);
+	}
+
+	@Singleton
+	@Provides
+	StarkExRepositoryType provideStarkExRepository(
+			OkHttpClient okHttpClient,
+			EthereumNetworkRepositoryType networkRepository,
+			AccountKeystoreService accountKeystoreService,
+			BlockExplorerClientType blockExplorerClient) {
+		TransactionLocalSource inMemoryCache = new TransactionInMemorySource();
+		return new StarkExRepository(
 				okHttpClient,
 				networkRepository,
 				accountKeystoreService,

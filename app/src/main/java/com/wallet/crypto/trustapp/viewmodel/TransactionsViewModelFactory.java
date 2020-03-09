@@ -7,9 +7,9 @@ import android.support.annotation.NonNull;
 import com.aitivity.enterprise.wallet.interact.ENSTestInteract;
 import com.aitivity.enterprise.wallet.interact.FetchWawetCommandInteract;
 import com.aitivity.enterprise.wallet.interact.GetAAVEBalance;
+import com.aitivity.enterprise.wallet.interact.StarkExInteract;
 import com.aitivity.enterprise.wallet.router.ENSTestRouter;
 import com.aitivity.enterprise.wallet.router.WawetCommandDetailRouter;
-import com.aitivity.enterprise.wallet.smartContract.ENSTest;
 import com.wallet.crypto.trustapp.interact.FetchTransactionsInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultNetworkInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultWalletInteract;
@@ -30,6 +30,7 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
     private final GetDefaultWalletBalance getDefaultWalletBalance;
     private final GetAAVEBalance getAAVEBalance;
     private final ENSTestInteract ensTestInteract;
+    private final StarkExInteract starkExInteract;
     private final FetchTransactionsInteract fetchTransactionsInteract;
     private final FetchWawetCommandInteract fetchWawetCommandInteract;
     private final ManageWalletsRouter manageWalletsRouter;
@@ -51,6 +52,7 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
             GetDefaultWalletBalance getDefaultWalletBalance,
             GetAAVEBalance getAAVEBalance,
             ENSTestInteract ensTestInteract,
+            StarkExInteract starkExInteract,
             ManageWalletsRouter manageWalletsRouter,
             SettingsRouter settingsRouter,
             AaveRouter aaveRouter,
@@ -66,6 +68,7 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
         this.getDefaultWalletBalance = getDefaultWalletBalance;
         this.getAAVEBalance = getAAVEBalance;
         this.ensTestInteract = ensTestInteract;
+        this.starkExInteract = starkExInteract;
         this.fetchTransactionsInteract = fetchTransactionsInteract;
         this.fetchWawetCommandInteract = fetchWawetCommandInteract;
         this.manageWalletsRouter = manageWalletsRouter;
@@ -91,6 +94,7 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
                 getDefaultWalletBalance,
                 getAAVEBalance,
                 ensTestInteract,
+                starkExInteract,
                 manageWalletsRouter,
                 settingsRouter,
                 aaveRouter,

@@ -17,7 +17,7 @@ public class AaveViewModelFactory implements ViewModelProvider.Factory {
     private final GetAAVEBalance getAAVEBalance;
     private final GetDefaultWalletBalance getDefaultWalletBalance;
     private final FindDefaultNetworkInteract findDefaultNetworkInteract;
-    private FindDefaultWalletInteract findDefaultWalletInteract;
+    private final FindDefaultWalletInteract findDefaultWalletInteract;
     private final AaveInfoInteract aaveInfoInteract;
 
     public AaveViewModelFactory(

@@ -3,10 +3,10 @@ package com.aitivity.enterprise.wallet.viewmodel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
+import com.aitivity.enterprise.wallet.interact.AaveInfoInteract;
 import com.aitivity.enterprise.wallet.interact.GetAAVEBalance;
 import com.wallet.crypto.trustapp.entity.NetworkInfo;
 import com.wallet.crypto.trustapp.entity.Wallet;
-import com.aitivity.enterprise.wallet.interact.AaveInfoInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultNetworkInteract;
 import com.wallet.crypto.trustapp.interact.FindDefaultWalletInteract;
 import com.wallet.crypto.trustapp.interact.GetDefaultWalletBalance;
